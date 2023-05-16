@@ -1,9 +1,8 @@
 package com.fatec.sig1.model;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.br.CNPJ;
-import org.joda.time.DateTime;
+
 
 //The JPA was renamed as Jakarta Persistence in 2019 and version 3.0 was released in 2020. This included the renaming of packages and properties
 //from javax. persistence to jakarta. persistence.
@@ -47,7 +46,6 @@ public class Ong {
 	private String descricao;
 	private String segmento;
 	
-	@Pattern(regexp = "/^[a-z0-9.]+@[a-z0-9]+\\.[a-z]+\\.([a-z]+)?$/i", message = "O e-mail deve ser escrito no formato nome@gmail.com")
 	@NotBlank(message = "O Email é obrigatório")
 	private String email;
 
@@ -59,14 +57,12 @@ public class Ong {
 	
 	private String contaCorrente;
 	private String agencia;
-	private String pix;
-	private String Cpf;
-	
+	private String pix;	
 	
 	
 	public Ong(String nome, long telefone, String cep, String complemento, 
 			String descricao, String segmento, String email, String senha, String cnpj, 
-			String cnae, String contaCorrente, String agencia, String pix, String Cpf, String regiao) {
+			String cnae, String contaCorrente, String agencia, String pix, String regiao) {
 		this.nome = nome;
 		this.telefone = telefone;
 		this.cep = cep;
@@ -80,7 +76,6 @@ public class Ong {
 		this.contaCorrente = contaCorrente;
 		this.agencia = agencia;
 		this.pix = pix;
-		this.Cpf = Cpf;
 		this.regiao = regiao;
 	}
 
@@ -205,14 +200,6 @@ public class Ong {
 
 	public void setAgencia(String agencia) {
 		this.agencia = agencia;
-	}
-
-	public String getCpf() {
-		return Cpf;
-	}
-
-	public void setCpf(String cpf) {
-		Cpf = cpf;
 	}
 
 	public String getPix() {

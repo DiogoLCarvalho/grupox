@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fatec.sig1.model.Ong;
-import com.fatec.sig1.model.OngDTO;
 import com.fatec.sig1.model.User;
 import com.fatec.sig1.model.UserDTO;
 import com.fatec.sig1.services.MantemOng;
@@ -42,8 +41,9 @@ public class APILoginController {
 	@PostMapping
 	public ResponseEntity<Object> login(@RequestBody @Valid UserDTO userDTO, BindingResult result) {
 		
-		logger.info(">>>>>> email da requisicao:" + userDTO.getEmail());
-		logger.info(">>>>>> senha da requisicao:" + userDTO.getSenha());
+		logger.info(">>>>>> email da requisicao: %s" , userDTO.getEmail());
+
+		logger.info(">>>>>> senha da requisicao: %s" , userDTO.getSenha());
 
 		Optional<User> userEmail = mantemUser.findByEmail(userDTO.getEmail());
 		Optional<User> userSenha = mantemUser.findBySenha(userDTO.getSenha());
@@ -52,10 +52,10 @@ public class APILoginController {
 			logger.info("!!Nada encontrado no banco de dados do tipo usuário!!");
 		}else {
 			try {
-				logger.info(">>>>>> Encontrou Email no banco: " + userEmail.get().getEmail());
-				logger.info(">>>>>> Encontrou Senha no banco: " + userSenha.get().getSenha());
+				logger.info(">>>>>> Encontrou Email no banco:  %s" , userEmail.get().getEmail());
+				logger.info(">>>>>> Encontrou Senha no banco:  %s" , userSenha.get().getSenha());
 			} catch (Exception e) {
-				logger.info(">>>> ERRO: " + e);
+				logger.info(">>>> ERRO: %s" , e);
 			}
 			return ResponseEntity.status(HttpStatus.OK).body(userEmail.get());
 		}
@@ -67,8 +67,8 @@ public class APILoginController {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Email ou senha inválidos");
 		}else {
 			try {
-				logger.info(">>>>>> Encontrou Email no banco: " + ongEmail.get().getEmail());
-				logger.info(">>>>>> Encontrou Senha no banco: " + ongSenha.get().getSenha());
+				logger.info(">>>>>> Encontrou Email no banco: %s " , ongEmail.get().getEmail());
+				logger.info(">>>>>> Encontrou Senha no banco: %s" , ongSenha.get().getSenha());
 			} catch (Exception e) {
 				logger.info(e);
 			}

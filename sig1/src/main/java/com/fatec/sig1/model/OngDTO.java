@@ -1,7 +1,7 @@
 package com.fatec.sig1.model;
 import javax.validation.constraints.NotBlank;
 
-import javax.validation.constraints.Pattern;
+
 
 import org.hibernate.validator.constraints.br.CNPJ;
 
@@ -38,11 +38,10 @@ public class OngDTO {
 	private String contaCorrente;
 	private String agencia;
 	private String pix;
-	private String Cpf;
 
 	public OngDTO(String nome, long telefone, String cep, String complemento, 
 			String descricao, String segmento, String email, String senha, String cnpj, 
-			String cnae, String contaCorrente, String agencia, String pix, String Cpf, String regiao) {
+			String cnae, String contaCorrente, String agencia, String pix, String regiao) {
 		this.nome = nome;
 		this.telefone = telefone;
 		this.cnpj = cnpj;
@@ -56,7 +55,6 @@ public class OngDTO {
 		this.contaCorrente = contaCorrente;
 		this.agencia = agencia;
 		this.pix = pix;
-		this.Cpf = Cpf;
 		this.regiao = regiao;
 	}
 	
@@ -166,14 +164,6 @@ public class OngDTO {
 	public void setPix(String pix) {
 		this.pix = pix;
 	}
-
-	public String getCpf() {
-		return Cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.Cpf = cpf;
-	}
 	
 	public String getRegiao() {
 		return regiao;
@@ -184,6 +174,6 @@ public class OngDTO {
 	}
 
 	public Ong retornaUmCliente() {
-		return new Ong(nome, telefone, cep, complemento, descricao, segmento, email, senha, cnpj, cnae, contaCorrente, agencia, pix, Cpf, regiao);
+		return new Ong(nome, telefone, cep, complemento, descricao, segmento, email, senha, cnpj, cnae, contaCorrente, agencia, pix,regiao);
 	}
 }

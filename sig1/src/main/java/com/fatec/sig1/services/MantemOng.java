@@ -29,4 +29,6 @@ public interface MantemOng {
     Optional<Ong> findByEmail(String email);
     
     Optional<Ong> findBySenha(String senha);
+
+	
 }

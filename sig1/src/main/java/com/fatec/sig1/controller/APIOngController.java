@@ -18,14 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.ResourceAccessException;
-import org.springframework.web.client.RestTemplate;
-
-import com.fatec.sig1.model.Cnae;
 import com.fatec.sig1.model.Endereco;
-import com.fatec.sig1.services.MantemOngI;
-import com.fatec.sig1.model.MantemOngRepository;
 import com.fatec.sig1.model.Ong;
 import com.fatec.sig1.model.OngDTO;
 import com.fatec.sig1.services.MantemOng;
@@ -47,21 +40,19 @@ public class APIOngController {
 		ong = new Ong();
 
 		if (result.hasErrors()) {
-			logger.info(">>>>>> apicontroller validacao da entrada dados invalidos" + result.getFieldError());
+			logger.info(">>>>>> apicontroller validacao da entrada dados invalidos %s" , result.getFieldError());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dados inválidos.");
 		}
 
-		if (ongDTO.getCnpj() != null) {
-			if (mantemOng.consultaPorCnpj(ongDTO.getCnpj()).isPresent()) {
+		if (ongDTO.getCnpj() != null &&  (mantemOng.consultaPorCnpj(ongDTO.getCnpj()).isPresent())) {
 				logger.info(">>>>>> apicontroller consultaporcnpj CNPJ ja cadastrado");
 				return ResponseEntity.status(HttpStatus.CONFLICT).body("CNPJ já cadastrado");
-			}
 		}
 		
 		if (ongDTO.getCep() != null) {
 			Optional<Endereco> endereco = Optional.ofNullable(mantemOng.obtemEndereco(ongDTO.getCep()));
 
-			logger.info(">>>>>> apicontroller obtem endereco => " + ongDTO.getCep());
+			logger.info(">>>>>> apicontroller obtem endereco =>  %s" , ongDTO.getCep());
 
 			if (endereco.isEmpty()) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CEP invalido");
@@ -85,11 +76,11 @@ public class APIOngController {
 	@CrossOrigin // desabilita o cors do spring security
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deletePorId(@PathVariable(value = "id") Long id) {
-		Optional<Ong> ong = mantemOng.consultaPorId(id);
-		if (ong.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id não encontrado.");
+		Optional<Ong> ongDeletePorId = mantemOng.consultaPorId(id);
+		if (ongDeletePorId.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi possivel encontrar o ID para deletar.");
 		}
-		mantemOng.delete(ong.get().getId());
+		mantemOng.delete(ongDeletePorId.get().getId());
 		return ResponseEntity.status(HttpStatus.OK).body("ONG excluida");
 	}
 	
@@ -98,11 +89,12 @@ public class APIOngController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> consultaPorId(@PathVariable Long id) {
 		logger.info(">>>>>> apicontroller consulta por id chamado");
-		Optional<Ong> ong = mantemOng.consultaPorId(id);
-		if (ong.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id não encontrado.");
+		Optional<Ong> ongPorId = mantemOng.consultaPorId(id);
+		
+		if (ongPorId.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi possivel encontrar o ID para consultar.");
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(ong.get());
+		return ResponseEntity.status(HttpStatus.OK).body(ongPorId.get());
 	}
 	
 	
@@ -131,9 +123,13 @@ public class APIOngController {
 			}
 		}
 
-		Optional<Ong> ong = mantemOng.atualiza(id, ongDTO.retornaUmCliente());
-
-		return ResponseEntity.status(HttpStatus.OK).body(ong.get());
+		Optional<Ong> ongatualizada = mantemOng.atualiza(id, ongDTO.retornaUmCliente());
+		
+		if (!ongatualizada.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.OK).body(ongatualizada.get());
+		}else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Falha ao atualizar :(");
+		}
 	}
 
 

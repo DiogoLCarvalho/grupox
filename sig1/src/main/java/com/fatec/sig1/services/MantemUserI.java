@@ -9,15 +9,9 @@ import com.fatec.sig1.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.ResourceAccessException;
-import org.springframework.web.client.RestTemplate;
-
-import com.fatec.sig1.model.Endereco;
 import com.fatec.sig1.model.MantemUserRepository;
+import com.fatec.sig1.model.Ong;
 
 @Service
 public class MantemUserI implements MantemUser {
@@ -78,12 +72,20 @@ public class MantemUserI implements MantemUser {
 
 		User userModificado = new User(user.getNome(), user.getSobrenome(),user.getEmail(), user.getSenha());
 
-		User userGetId = this.repository.findById(id).get();
+		Optional<User> userGetIdValue = this.repository.findById(id);
+		User userGetId;
+		
+		if (!(userGetIdValue.isEmpty())) {
+			userGetId = userGetIdValue.get();
+		}else {
+			return Optional.empty();
+		}
+		
 
 		userModificado.setId(id);
 		
 		logger.info(
-				">>>>>> 2. servico atualiza informacoes da ong cep valido para o id => " + userModificado.getId());
+				">>>>>> 2. servico atualiza informacoes da ong cep valido para o id => %s" , userModificado.getId());
 
 		if (userModificado.getNome() == null) {
 			userModificado.setNome(userGetId.getNome());

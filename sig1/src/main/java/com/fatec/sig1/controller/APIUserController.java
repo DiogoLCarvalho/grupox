@@ -19,11 +19,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.ResourceAccessException;
-import org.springframework.web.client.RestTemplate;
-
-import com.fatec.sig1.model.MantemUserRepository;
 import com.fatec.sig1.model.User;
 import com.fatec.sig1.model.UserDTO;
 import com.fatec.sig1.services.MantemUser;
@@ -45,7 +40,7 @@ public class APIUserController {
 		user = new User();
 
 		if (result.hasErrors()) {
-			logger.info(">>>>>> apicontroller validacao da entrada dados invalidos" + result.getFieldError());
+			logger.info(">>>>>> apicontroller validacao da entrada dados invalidos %s" , result.getFieldError());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dados inválidos.");
 		}
 		
@@ -66,11 +61,11 @@ public class APIUserController {
 	@CrossOrigin // desabilita o cors do spring security
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deletePorId(@PathVariable(value = "id") Long id) {
-		Optional<User> user = mantemUser.consultaPorId(id);
-		if (user.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id não encontrado.");
+		Optional<User> userDeletePorId = mantemUser.consultaPorId(id);
+		if (userDeletePorId.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ID de usuario não encontrado para exclusão");
 		}
-		mantemUser.delete(user.get().getId());
+		mantemUser.delete(userDeletePorId.get().getId());
 		return ResponseEntity.status(HttpStatus.OK).body("ONG excluida");
 	}
 	
@@ -78,11 +73,11 @@ public class APIUserController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> consultaPorId(@PathVariable Long id) {
 		logger.info(">>>>>> apicontroller consulta por id chamado");
-		Optional<User> user = mantemUser.consultaPorId(id);
-		if (user.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id não encontrado.");
+		Optional<User> userConsultaPorId = mantemUser.consultaPorId(id);
+		if (userConsultaPorId.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ID de usuario não encontrado para consulta");
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(user.get());
+		return ResponseEntity.status(HttpStatus.OK).body(userConsultaPorId.get());
 	}
 	
 	@CrossOrigin // desabilita o cors do spring security
@@ -103,35 +98,15 @@ public class APIUserController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id não encontrado.");
 		}
 
-		Optional<User> user = mantemUser.atualiza(id, userDTO.retornaUmCliente());
+		Optional<User> userAtualizado = mantemUser.atualiza(id, userDTO.retornaUmCliente());
 
-		return ResponseEntity.status(HttpStatus.OK).body(user.get());
-	}
-
-
+		if (!userAtualizado.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.OK).body(userAtualizado.get());
+		}else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Falha ao atualizar :(");
+		}
 	
-	/*
-	@CrossOrigin // desabilita o cors do spring security
-	@PostMapping("/login")
-	public ResponseEntity<Object> login(@RequestBody @Valid UserDTO userDTO, BindingResult result) {
-		logger.info(">>>>>> email da requisicao:" + userDTO.getEmail());
-		logger.info(">>>>>> senha da requisicao:" + userDTO.getSenha());
-		
-		Optional<User> userEmail = mantemUser.findByEmail(userDTO.getEmail());
-		Optional<User> userSenha = mantemUser.findBySenha(userDTO.getSenha());
-		
-		try {
-			logger.info(">>>>>> Encontrou Email no banco: " + userEmail.get().getEmail());
-			logger.info(">>>>>> Encontrou Senha no banco: " + userSenha.get().getSenha());
-		} catch (Exception e) {
-			logger.info(e);
-		}
-		
-		if (userEmail.isEmpty() || userSenha.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Email ou senha inválidos");
-		}
-		return ResponseEntity.status(HttpStatus.OK).body(userEmail.get());
 	}
-*/
+
 
 }
