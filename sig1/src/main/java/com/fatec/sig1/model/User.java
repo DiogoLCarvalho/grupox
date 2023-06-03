@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -33,6 +34,7 @@ public class User {
 	@NotBlank(message = "O Email é obrigatório")
 	private String email;
 
+	@JsonIgnore
 	@NotBlank(message = "A senha é obrigatório")
 	private String senha;
 

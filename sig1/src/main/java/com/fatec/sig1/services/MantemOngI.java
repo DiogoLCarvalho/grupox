@@ -13,7 +13,6 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import com.fatec.sig1.model.Ong;
 import com.fatec.sig1.model.MantemOngRepository;
-import com.fatec.sig1.model.Cnae;
 import com.fatec.sig1.model.Endereco;
 
 
@@ -216,26 +215,6 @@ public class MantemOngI implements MantemOng {
 
 	}
 
-	
-
-	public Cnae obtemCnae(String cnae) {
-		RestTemplate template = new RestTemplate();
-
-		String url = "https://servicodados.ibge.gov.br/api/v2/cnae/classes/{cnae}";
-		logger.info("Consultar CNAE:  %s" , cnae);
-		ResponseEntity<Cnae> resposta = null;
-
-		try {
-			resposta = template.getForEntity(url, Cnae.class, cnae);
-			return resposta.getBody();
-		} catch (ResourceAccessException e) {
-			logger.info(">>>>>> consulta CNAE erro nao esperado ");
-			return null;
-		} catch (HttpClientErrorException e) {
-			logger.info(">>>>>> consulta CNAE inválido erro HttpClientErrorException =>  %s",e.getMessage());
-			return null;
-		}
-	}
 
 	public Endereco obtemEndereco(String cep) {
 

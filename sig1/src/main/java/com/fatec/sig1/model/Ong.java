@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CNPJ;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -53,6 +54,7 @@ public class Ong {
 	@NotBlank(message = "O Email é obrigatório")
 	private String email;
 
+	@JsonIgnore
 	@NotBlank(message = "A senha é obrigatório")
 	private String senha;
 	

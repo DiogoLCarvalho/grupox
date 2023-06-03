@@ -1,6 +1,9 @@
 package com.fatec.sig1.model;
 
 import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +28,7 @@ public class Admin {
 		@NotBlank(message = "O Email é obrigatório")
 		private String email;
 
+		@JsonIgnore
 		@NotBlank(message = "A senha é obrigatório")
 		private String senha;
 		private String role;
