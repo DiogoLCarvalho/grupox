@@ -6,12 +6,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.fatec.sig1.model.Ong;
 import com.fatec.sig1.model.Admin;
+import com.fatec.sig1.model.Comentario;
 import com.fatec.sig1.model.Exclusao;
 import com.fatec.sig1.model.MantemAdminRepository;
+import com.fatec.sig1.model.MantemComentarioRepository;
 import com.fatec.sig1.model.MantemExclusaoRepository;
 import com.fatec.sig1.model.MantemOngRepository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +37,11 @@ public class LoadDatabase {
 	private static final String CENTRO = "Centro";
 	private static final String BANCO_ITAU = "Banco Itaú";
 	
+	Ong ong1 = new Ong("Adote sempre cabe mais um", 981151084, "03694000","Casa", "O Instituto Adote Sempre Cabe Mais Um resgata cães e gatos abandonados ou em situação de maus-tratos em Jarinu (SP). Os animais acolhidos são castrados, vacinados e encaminhados para a adoção, que também é acompanhada pela ONG.", "Proteção Animal", "adotesemprecabemaisum@gmail.com", "456", "33.605.926/0001-60", "6612-6|05", "089527", "0191", "Bradesco","emailpixadote@gmail.com", "302.206.482-71",ZONA_NORTE,LocalDate.parse("2023-02-20"));
+	
+	List<Long> user2Favoritos = new ArrayList<>(Arrays.asList((long) 1, (long) 5));
+	User user2 = new User("Bianca", "Jesus","biancaJesus299@gmail.com", "98765*A", LocalDate.parse("2023-05-21"),user2Favoritos);
+	
 	@Autowired
 	MantemOngRepository ongRepository;
 	
@@ -42,25 +50,6 @@ public class LoadDatabase {
 	return args -> {
 		repository.deleteAll();
 
-		Ong ong1 = new Ong
-				(
-						"Adote sempre cabe mais um", 
-						981151084, 
-						"03694000",
-						"Casa", 
-						"O Instituto Adote Sempre Cabe Mais Um resgata cães e gatos abandonados ou em situação de maus-tratos em Jarinu (SP). Os animais acolhidos são castrados, vacinados e encaminhados para a adoção, que também é acompanhada pela ONG.", 
-						"Proteção Animal", 
-						"adotesemprecabemaisum@gmail.com", "456", 
-						"33.605.926/0001-60", 
-						"6612-6|05", 
-						"089527", 
-						"0191", 
-						"Bradesco",
-						"emailpixadote@gmail.com", 
-						"302.206.482-71",
-						ZONA_NORTE,
-						LocalDate.parse("2023-02-20")
-				);
 		ong1.setEndereco("Aguia de Haia");
 		logger.info(TEXTO_LOGGER, repository.save(ong1));
 		
@@ -493,6 +482,8 @@ public class LoadDatabase {
 		
 	}
 	
+
+	
 	@Autowired
 	MantemUserRepository userRepository;
 		
@@ -505,9 +496,6 @@ public class LoadDatabase {
 		User user1 = new User("Diogo", "Lima","DiogoLima50@gmail.com", "12345", LocalDate.parse("2023-05-20"),user1Favoritos) ;
 		logger.info(TEXTO_LOGGER, repository.save(user1));
 		
-		List<Long> user2Favoritos = new ArrayList<>(Arrays.asList((long) 1, (long) 5));
-		
-		User user2 = new User("Bianca", "Jesus","biancaJesus299@gmail.com", "98765*A", LocalDate.parse("2023-05-21"),user2Favoritos) ;
 		logger.info(TEXTO_LOGGER, repository.save(user2));
 		
 				
@@ -542,7 +530,28 @@ public class LoadDatabase {
 		logger.info(TEXTO_LOGGER, repository.save(exclui));
 		
 		};
-
 	}
+	
+	
+	
+	
+	@Autowired
+	MantemComentarioRepository comentarioRepository;
+		
+	@Bean
+	CommandLineRunner initDatabaseComentario(MantemComentarioRepository repository, MantemComentario repoCliente) {
+		return args -> {
+		repository.deleteAll();
+		
+		LocalDateTime localDateTime1 = LocalDateTime.of(2023, 06, 01, 20, 33, 48, 640000);
+		
+		Comentario comentario1 = new Comentario(ong1, user2, "A ONG é muito boa, o trabalho deles é lindo!", 4, localDateTime1);
+		logger.info(TEXTO_LOGGER, repository.save(comentario1));
+		
+		};
+	}
+	
+
+	
 
 }

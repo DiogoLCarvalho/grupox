@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CNPJ;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
+
 //The JPA was renamed as Jakarta Persistence in 2019 and version 3.0 was released in 2020. This included the renaming of packages and properties
 //from javax. persistence to jakarta. persistence.
 import jakarta.persistence.Column;
@@ -18,9 +21,11 @@ public class Ong {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@JsonView(Views.Public.class)
 	private Long id;
 	
 	@NotBlank(message = "Nome é requerido")
+	@JsonView(Views.Public.class)
 	private String nome;
 	
 	@NotBlank(message = "Insira apenas números")
@@ -280,6 +285,8 @@ public class Ong {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	
+	
 	
 }
 	

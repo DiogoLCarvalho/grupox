@@ -209,7 +209,6 @@ public class MantemOngI implements MantemOng {
 		LocalDate dataAtual = LocalDate.now();
 		
 		if (ongModificado.getDataCadastro().isEqual(dataAtual)) {
-			logger.info("OIII");
 			ongModificado.setDataCadastro(ongGetId.getDataCadastro());
 		}
 		

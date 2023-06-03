@@ -23,8 +23,10 @@ import com.fatec.sig1.model.Ong;
 import com.fatec.sig1.model.User;
 import com.fatec.sig1.model.Admin;
 import com.fatec.sig1.model.AdminDTO;
+import com.fatec.sig1.model.Comentario;
 import com.fatec.sig1.model.Exclusao;
 import com.fatec.sig1.services.MantemAdmin;
+import com.fatec.sig1.services.MantemComentario;
 import com.fatec.sig1.services.MantemExclusao;
 import com.fatec.sig1.services.MantemOng;
 import com.fatec.sig1.services.MantemUser;
@@ -42,21 +44,24 @@ public class APIAdminController {
 	Logger logger = LogManager.getLogger(this.getClass());
 
 	@CrossOrigin // desabilita o cors do spring security
-	@PostMapping
-	public ResponseEntity<Object> saveCliente(@RequestBody @Valid AdminDTO adminDTO, BindingResult result) {
+	@PostMapping("/{id}")
+	public ResponseEntity<Object> saveCliente(@PathVariable(value = "id") Long id, @RequestBody @Valid AdminDTO adminDTO, BindingResult result) {
 		admin = new Admin();
-
-		if (result.hasErrors()) {
-			logger.info(">>>>>> apicontroller validacao da entrada dados invalidos  %s" , result.getFieldError());
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dados inválidos.");
+		
+		if(id == 1) {
+			if (result.hasErrors()) {
+				logger.info(">>>>>> apicontroller validacao da entrada dados invalidos  %s" , result.getFieldError());
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dados inválidos.");
+			}
+			
+			try {
+				return ResponseEntity.status(HttpStatus.CREATED).body(mantemAdmin.save(adminDTO.retornaUmCliente()));
+			} catch (Exception e) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro não esperado");
+			}			
 		}
-
-		try {
-			return ResponseEntity.status(HttpStatus.CREATED).body(mantemAdmin.save(adminDTO.retornaUmCliente()));
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro não esperado");
-		}
-
+		
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Apenas administradores master podem criar outros adminstradores");
 	}
 
 	@CrossOrigin // desabilita o cors do spring security
@@ -196,6 +201,23 @@ public class APIAdminController {
 		return ResponseEntity.status(HttpStatus.OK).body(excluiID.get().getUsuariosExcluidos());
 	}
 	
-
+	// ----------------------------------------------------- EXCLUIR COMENTARIO  -----------------------------------------------------
+	
+	@Autowired
+	MantemComentario mantemComentario;
+	
+	@CrossOrigin
+	@DeleteMapping("deletaComentario/{id}")
+	public ResponseEntity<Object> deletaComentario(@PathVariable(value = "id") Long id){
+		Optional<Comentario> comentarioConsultado = mantemComentario.consultaPorId(id);
+		
+		if(comentarioConsultado.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id não encontrado para o comentario");
+		}
+		
+		mantemComentario.delete(comentarioConsultado.get().getId());
+	
+		return ResponseEntity.status(HttpStatus.OK).body("Comentario Excluido");
+	}
 	
 }

@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,8 +20,10 @@ import jakarta.persistence.Table;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@JsonView(Views.Public.class)
 	private Long id;
 	
+    @JsonView(Views.Public.class)
 	@NotBlank(message = "Nome é requerido")
 	private String nome;
 	
@@ -33,8 +39,9 @@ public class User {
 	private LocalDate dataCadastro;
 	
 	private List<Long> favoritos = new ArrayList<>();
-	
+    
 	private String role;
+ 
 	private static final String USUARIO = "USUARIO";
 	
 	
