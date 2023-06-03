@@ -10,6 +10,8 @@ import com.fatec.sig1.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.fatec.sig1.model.MantemUserRepository;
@@ -21,6 +23,8 @@ public class MantemUserI implements MantemUser {
 
 	@Autowired
 	MantemUserRepository repository;
+	
+	PasswordEncoder passwordEncoder;
 	
 	@Override
 	public List<User> consultaTodos() {
@@ -90,7 +94,12 @@ public class MantemUserI implements MantemUser {
 	public Optional<User> save(User user) {
 		
 		logger.info(">>>>>> servico save do usuário chamado ");
-
+		
+		passwordEncoder = new BCryptPasswordEncoder();
+		
+		String encodedPassoword = passwordEncoder.encode(user.getSenha());
+		logger.info(encodedPassoword);
+	
 		return Optional.ofNullable(repository.save(user));
 	}
 
