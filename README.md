@@ -10,12 +10,13 @@ Grupo CPDev
 - <a href = "https://github.com/leocaje"> Leonardo Cajé</a>
 
 ##### Processo de Desenvolvimento de Software - PDS
-> O PDS segue uma abordagem interativa incremental adaptada do Scrum. Cada interação tem uma definição de pronto estabelecida com objetivo de controlar a qualidade. 
-> Como padrão de projeto, foi utilizado o MVC (Model-View-Controller). 
-> A aplicação foi construído com base nos princípios SOLID.
+> O PDS segue uma abordagem mista entre modelo cascata e modelo interativo-incremental adaptada do Scrum. Cada interação durava uma semana e tinha encontros semanais. A definição de pronto de cada interação era estabelecida com objetivo de controlar a qualidade do desenvolvimento. <br>
+> Como padrão de projeto, foi utilizado o MVC (Model-View-Controller). <br>
+> A aplicação foi construída com base nos princípios SOLID.
 
 ##### Estudo de Caso – SOCIELOO
-> No contexto do projeto interdisciplinar o estudo de caso tem como objetivo desenvolver e implantar um site centralizador de ONGs, instituições e projetos sociais da cidade de São Paulo, com o propósito de divulgá-las a possíveis doadores e voluntários e criar, assim, um ELO entre ONGs e a sociedade. O diferencial do site é a maior flexibilidade do usuário para a escolha de Projetos sociais com a localização e segmento de sua preferência, podendo favoritar, analisar e avaliar cada projeto.
+> No contexto do projeto interdisciplinar o estudo de caso tem como objetivo desenvolver e implantar o SOCIELOO, um site centralizador de ONGs, instituições e projetos sociais da cidade de São Paulo, com o propósito de divulgá-las a possíveis doadores e voluntários e criar, assim, um ELO entre ONGs e a sociedade. O diferencial do site é a maior flexibilidade do usuário para a escolha de Projetos sociais com a localização e segmento de sua preferência, podendo favoritar, analisar e avaliar cada projeto. <br>
+> O site foi concebido com a proposta de atender aos Objetivos de Desenvolvimento Sustentável (ODS), da ONU.
 
 ##### Levantamento de Requisitos
 | Identificador | Descrição | Prioridade | 
@@ -55,10 +56,10 @@ Grupo CPDev
 | -- | ------ | ----- | ------------------------ |---------------------------------------------------------- | ------ | --- | ------ | 
 | **1** | Cadastro | ONG | Poder cadastrar minha ONG no site, através de informações como: CNAE, nome, e-mail e senha | Eu possa ter minha Página de ONG no site, descrever minha ONG e mostrar para as pessoas como ajudar minha causa. | Alta | 1 | Concluído |
 | **2** | Cadastro | Uuário | Fazer um cadastro com meu nome, e-mail e senha | Eu possa acessar as páginas de Ongs para saber mais sobre suas causas, escolher as que mais me interessam e ver como posso ajudar. | Alta | 4 | Concluído |
-| **3** | Cadastro | Administrador | Fazer meu cadastro em uma página a parte do site, específica para funcionário, com o meu número de registro, nome, e-mail e senha | Eu possa ter acesso aos dados e código do site, para que possa verificar informações e excluir contas e comentários. | Alta | 4 | Em andamento |
+| **3** | Cadastro | Administrador | Fazer meu cadastro em uma página a parte do site, específica para funcionário, com o meu número de registro, nome, e-mail e senha | Eu possa ter acesso aos dados e código do site, para que possa verificar informações e excluir contas e comentários. | Alta | 4 | Concluído |
 | **4** | Validação | Sistema | Validar ONG na base de dados do site | As informações das ONGs sejam conferidas como autênticas e a instituição seja liberada para criar uma Página de ONG e compartilhar informações de seus trabalhos. | Alta | 1 | Concluído |
 | **5** | Login | ONG/Usuário | Fazer Login através do e-mail e senha | Eu tenha acesso a minha conta cadastrada. | Alta | 2 | Concluído |
-| **6** | Login | Administrador | Fazer Login em uma página a parte do site através do meu número de registro e senha. | Eu tenha acesso a minha conta cadastrada de funcionário | Alta | 4 | Em andamento |
+| **6** | Login | Administrador | Fazer Login em uma página a parte do site através do meu número de registro e senha. | Eu tenha acesso a minha conta cadastrada de funcionário | Alta | 4 | Concluído |
 | **7** | Login | ONG/Usuário/<br>Administrador | Recuperação de senha | Caso tenha esquecido minha senha, eu possa ter acesso ao link de redefinição de senha enviado para meu e-mail cadastrado e assim conseguir fazer o login. | Alta | 5 | A fazer |
 | **8** | Criação | ONG | Criar uma Página de ONG personalizada apenas para minha ONG | Se disponibilizar informações da minha instituição aos usuários (descrição, endereço, contato, ícone, avaliações de usuários conta corrente, agência, pix) e permitir que se promovam as atividades relevantes ao meu público. | Alta | 2 | Concluído |
 | **9** | Criação | Usuário | Fazer comentários nas Páginas de ONG | Possa falar sobre os projetos sociais e minha experiência com aquelas instituições. | Média | 5 | A fazer |
@@ -68,8 +69,8 @@ Grupo CPDev
 | **13** | Alteração | Usuário | Alterar comentários, onde poderei alterá-lo em até 24hr depois que o fiz | Possa corrigir erros ortográficos, de informação ou digitação acidental. | Baixa | 5 | A fazer |
 | **14** | Exclusão | ONG | Deletar o cadastro e as informações da minha ONG do site | Não se divulgue mais informações da ONG por falta de interesse, insatisfação com o serviço ou porque ela não existe mais. | Alta | 1 | Concluído |
 | **15** | Exclusão | Usuário | Deletar meu cadastro através da minha página de configurações no site | Por motivos pessoais não quero mais manter o meu cadastro e receber informações das Ongs do site. | Alta | 4 | Concluído |
-| **16** | Exclusão | Administrador | Excluir ONG através de minhas permissões como funcionário e acesso às informações de ONGs cadastradas | As instituições que estão prestando informações falsas, descobertas por denúncias ou supervisão dos funcionários, não sejam mais divulgadas no ambiente do site e comprometam a opinião pública sobre demais ONGs ou o próprio site. | Alta | 4 | Em andamento |
-| **17** | Exclusão | Administrador | Excluir usuário através de minhas permissões como funcionário e acesso às informações de usuários cadastrados | Os usuários mal-intencionados não possam afetar a imagem de trabalhos divulgados ou do próprio site. | Alta | 4 | A fazer |
+| **16** | Exclusão | Administrador | Excluir ONG através de minhas permissões como funcionário e acesso às informações de ONGs cadastradas | As instituições que estão prestando informações falsas, descobertas por denúncias ou supervisão dos funcionários, não sejam mais divulgadas no ambiente do site e comprometam a opinião pública sobre demais ONGs ou o próprio site. | Alta | 4 | Concluído |
+| **17** | Exclusão | Administrador | Excluir usuário através de minhas permissões como funcionário e acesso às informações de usuários cadastrados | Os usuários mal-intencionados não possam afetar a imagem de trabalhos divulgados ou do próprio site. | Alta | 4 | Concluído |
 | **18** | Exclusão | Administrador | Excluir comentários de usuários nas Páginas de ONG | Se evite ofensas e comentários mal-intencionados que afetem a honra de terceiros (ONGs ou outros usuários). | Média | 5 | A fazer |
 | **19** | ONG | ONG | Denunciar usuários que fazem comentários difamando ou insultando a ONG e/ou funcionários | As instituições não tenham suas reputações indevidamente manchadas por usuários mal-intencionados. | Baixa | 5 | A fazer |
 | **20** | Usuário | Usuário | Filtrar buscas de acordo com meus interesses (por nome, região, segmento ou localização atual) | Encontre ONGs que se adequem ao perfil de instituição eu quero ajudar. | Alta | 4 | Concluído |
@@ -77,17 +78,17 @@ Grupo CPDev
 | **22** | Usuário | Usuário | Avaliar ONGs em suas respectivas Páginas de ONG | Fazer avaliações com base em minhas experiencias e minha satisfação com aquela causa e instituição. | Média | 5 | Em andamento |
 | **23** | Usuário | Usuário | Compartilhar ONG através de um botão em que envio o link daquela Página de ONG do site para quem eu desejar | Consiga compartilhar as Páginas de ONG e divulgar as instituições e seus trabalhos para as pessoas. | Baixa | 4 | Concluído |
 | **24** | Usuário | Usuário | Ter acesso ao FAQ, onde terei respostas de perguntas frequentes sobre o site | Tenha informações sobre o site e consiga mexer nele com maior facilidade. | Baixa | 4 | Concluído |
-| **25** | Administrador | Administrador | Gerenciar banco de dados | Otimize a acessibilidade dos dados relevantes do sistema, a manutenção de dados ou alterações no banco. | Alta | 5 | Em andamento |
+| **25** | Administrador | Administrador | Gerenciar banco de dados | Otimize a acessibilidade dos dados relevantes do sistema, a manutenção de dados ou alterações no banco. | Alta | 5 | Concluído |
 | **26** | Acessibilidade | ONG/Usuário/<br>Administrador | Ter acesso ao menu de acessibilidade do site | Possa mudar o tamanho das letras e o contraste das cores conforme a minha necessidade. | Média | 2 | Concluído |
 | **27** | Acessibilidade | ONG/Usuário/<br>Administrador | Atalhos do teclado | Possa ter acesso mais rápido e prático as funções do menu de acessibilidade e ir para a home e rodapé do site. | Média | 2 | Concluído |
 | **28** | Acessibilidade | ONG/Usuário/<br>Administrador | VLibras | Em caso de ser deficiente auditivo, eu também possa acessar e entender os recursos do site, através do intérprete de libras. | Média | 2 | Concluído |
-| **29** | Responsividade | ONG/Usuário/<br>Administrador | Um site responsivo | Minha navegação seja fluída e o site funcione adequadamente em qualquer dispositivo que eu esteja utilizando para acessá-lo. | Média | 5 | A fazer |
+| **29** | Responsividade | ONG/Usuário/<br>Administrador | Um site responsivo | Minha navegação seja fluída e o site funcione adequadamente em qualquer dispositivo que eu esteja utilizando para acessá-lo. | Média | 5 | Em andamento |
 | **30** | Perfil | ONG | Desejo ter um perfil | Possa ter acesso as opções funcionalidades disponíveis como: configurações de perfil (alterar dados do perfil, ícone de perfil), analisar as atividades relacionado aos comentários, avaliações. | Média | 3 | Concluído |
 | **31** | Perfil | Usuário | Desejo ter um perfil | Nossa ter acesso as opções funcionalidades disponíveis como: configurações de perfil (alterar dados do perfil, ícone de perfil), histórico de atividades (comentários, avaliações e denúncias), alterar informações de ONG’s favoritadas e ter autonomia na permissão da minha localização atual. | Média | 4 | Concluído |
-| **32** | Perfil | Administrador | Desejo ter um perfil | Possa ter acesso as opções funcionalidades disponíveis como: gerenciar perfil (alterar, deletar), gerenciar administradores (cadastrar, alterar e deletar), relatório de comentários e ONG’s denunciadas, relatório de ONG’s cadastradas e deletadas (com descrição do motivo). | Média | 5 | Em andamento | 
-| **33** | Relatório | Sistema | Gerar relatórios | Exiba resultados do site para os administradores acompanharem as métricas de total de ONGs cadastradas, a quantidade de ONGs cadastradas por mês, segmento e região, o total de usuários cadastrados e a quantidade de usuários cadastrados por mês. | Média | 5 | Em andamento | 
+| **32** | Perfil | Administrador | Desejo ter um perfil | Possa ter acesso as opções funcionalidades disponíveis como: gerenciar perfil (alterar, deletar), gerenciar administradores (cadastrar, alterar e deletar), relatório de comentários e ONG’s denunciadas, relatório de ONG’s cadastradas e deletadas (com descrição do motivo). | Média | 5 | Concluído | 
+| **33** | Relatório | Sistema | Gerar relatórios | Exiba resultados do site para os administradores acompanharem as métricas de total de ONGs cadastradas, a quantidade de ONGs cadastradas por mês, segmento e região, o total de usuários cadastrados e a quantidade de usuários cadastrados por mês. | Média | 5 | Concluído | 
 | **34** | Readme | Administrador | Atualização de readme do GitHub | Atualizar informações do README no GitHub, para que as pessoas tenham acesso atualizadas do projeto Socieloo. | Média | 5 | Concluído |
-| **35** | Testes | Desenvolvedor | Efetuar testes de códigos e aplicação | Para verificar se há alguma deformidade e necessidade de alteração. | Alta | 5 | Em andamento |
+| **35** | Testes | Desenvolvedor | Efetuar testes de códigos e aplicação | Para verificar se há alguma deformidade e necessidade de alteração. | Alta | 5 | Concluído |
 | **36** | Termos de uso | Usuário/ONG | Termo de utilização do site | Para que eu tenha informações sobre os termos de uso de acesso. | Média | 5 | Em andamento |
 
 ##### Sprint Backlog 
@@ -119,10 +120,17 @@ BANCO DE DADOS
 APIs
 - React Google Chart
 - ViaCEP
+- OpenStreetMap
 >
 PLUGINS
 - VLibras
 - Google Maps
+
+##### Resultados
+Construímos uma plataforma que cadastra ONGs. Cada ONG cadastrada recebe sua Página de ONG, em que suas informações são divulgadas para o público do site. Usuários também podem se cadastrar para interagir com as ONGs, incluindo comentários nas Páginas de ONG e favoritando as ONGs de sua preferência. O administrador controla os fluxos do site e tem acesso a um painel com ONGs e usuários cadastrados, os comentários postados e a quantidade de vezes que uma ONG foi favoritada. <br>
+Portanto, implementamos um projeto que, atualmente, possui 5 CRUDs (ONG, Usuário, Admin, Comentários e Favoritos) e 34 classes.
+
+<br>
 
 ##### Modelo de Domínio
 O modelo de dominio (Larman, 2006 - classes conceituais ou classes de negócio) foi definido considerando as seguintes classes: 
