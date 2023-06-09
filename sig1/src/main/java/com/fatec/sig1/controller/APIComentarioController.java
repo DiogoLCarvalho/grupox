@@ -1,11 +1,9 @@
 package com.fatec.sig1.controller;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.swing.text.View;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fatec.sig1.model.AvaliacoesDTO;
 import com.fatec.sig1.model.Comentario;
@@ -113,6 +110,6 @@ public class APIComentarioController {
 		}
 		
 	}
-	
+
 	
 }

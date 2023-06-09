@@ -35,6 +35,12 @@ public class APIUserController {
 	@Autowired
 	MantemUser mantemUser;
 
+	@Autowired
+	MantemExclusao mantemExclusao;
+	
+	@Autowired
+	MantemComentario mantemComentario;
+	
 	User user;
 	Logger logger = LogManager.getLogger(this.getClass());
 
@@ -61,12 +67,18 @@ public class APIUserController {
 		return ResponseEntity.status(HttpStatus.OK).body(mantemUser.consultaTodos());
 	}
 
-	@Autowired
-	MantemExclusao mantemExclusao;
+
 
 	@CrossOrigin // desabilita o cors do spring security
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deletePorId(@PathVariable(value = "id") Long id) {
+		
+		List<Comentario> comentarioUsuario = mantemComentario.consultaTodosOsComentariosUser(id);
+		
+		if (!(comentarioUsuario.isEmpty())) {
+			mantemComentario.deleteAll(comentarioUsuario);			
+		}
+		
 		Optional<User> userConsultaD = mantemUser.consultaPorId(id);
 
 		if (userConsultaD.isEmpty()) {
@@ -150,8 +162,6 @@ public class APIUserController {
 	// ----------------------------------------------------- EXCLUIR COMENTARIO
 	// -----------------------------------------------------
 
-	@Autowired
-	MantemComentario mantemComentario;
 
 	@CrossOrigin
 	@DeleteMapping("deletaComentario/{id}")

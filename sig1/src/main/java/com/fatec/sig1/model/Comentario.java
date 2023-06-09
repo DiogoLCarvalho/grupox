@@ -2,9 +2,10 @@ package com.fatec.sig1.model;
 
 import java.time.LocalDateTime;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

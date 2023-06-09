@@ -7,7 +7,6 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import jakarta.persistence.Entity;
@@ -72,6 +71,12 @@ public class User {
 		this.nome = nome;
 		this.email = email;
 		this.senha = senha;
+		setRole(USUARIO);
+	}
+	
+	public User(Long id, String nome) {
+		this.id = id;
+		this.nome = nome;
 		setRole(USUARIO);
 	}
 	

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fatec.sig1.model.Comentario;
 import com.fatec.sig1.model.Endereco;
 import com.fatec.sig1.model.Exclusao;
 import com.fatec.sig1.services.MantemUser;
@@ -26,6 +27,7 @@ import com.fatec.sig1.model.Ong;
 import com.fatec.sig1.model.OngDTO;
 import com.fatec.sig1.model.User;
 import com.fatec.sig1.model.UserDTO;
+import com.fatec.sig1.services.MantemComentario;
 import com.fatec.sig1.services.MantemExclusao;
 import com.fatec.sig1.services.MantemOng;
 
@@ -36,6 +38,9 @@ public class APIOngController {
 
 	@Autowired
 	MantemOng mantemOng;
+	
+	@Autowired
+	MantemComentario mantemComentario;
 
 	Ong ong;
 	Logger logger = LogManager.getLogger(this.getClass());
@@ -88,6 +93,13 @@ public class APIOngController {
 	@CrossOrigin // desabilita o cors do spring security
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deletePorId(@PathVariable(value = "id") Long id) {
+		
+		List<Comentario> comentarioOng = mantemComentario.consultaTodosOsComentariosOng(id);
+		
+		if (!(comentarioOng.isEmpty())) {
+			mantemComentario.deleteAll(comentarioOng);			
+		}
+		
 		Optional<Ong> ongConsultadaD = mantemOng.consultaPorId(id);
 		
 		if (ongConsultadaD.isEmpty()) {

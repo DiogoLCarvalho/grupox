@@ -20,7 +20,12 @@ public interface MantemComentario {
 	
 	void delete(Long id);
 	
+	void deleteAll(List<Comentario> comentarios);
+	
 	List<Comentario> consultaTodos();
 	
 	Optional<Comentario> atualiza(Long id, ComentarioDTO comentarioDTO, Comentario comentario);
+	
+	Optional<List<Comentario>> usuarioExcluido(Long id);
+	
 }

@@ -30,12 +30,26 @@ public class MantemComentarioI implements MantemComentario{
 	@Override
 	public Comentario save(ComentarioDTO comentarioDTO) {
 		
-		Ong ong =  ongRepository.findById(comentarioDTO.getOngId()).get();
+		Optional<Ong> ongI = ongRepository.findById(comentarioDTO.getOngId());
+		Ong ong;
 		
-		User usuario = userRepository.findById(comentarioDTO.getUsuarioId()).get();
-				
+		if (ongI.isEmpty()) {
+			return null;
+		}else {
+			ong = ongI.get();
+		}
+		
+		Optional<User> usuarioI = userRepository.findById(comentarioDTO.getUsuarioId());
+		User usuario;
+		
+		if(usuarioI.isEmpty()) {
+			return null;			
+		}else {
+			usuario = usuarioI.get();
+		}
+		
 		Comentario comentario = new Comentario(ong, usuario, comentarioDTO.getTextoComentario(), comentarioDTO.getAvaliacao());
-	
+		
 		return repository.save(comentario);
 	}
 	
@@ -69,6 +83,12 @@ public class MantemComentarioI implements MantemComentario{
 		
 		repository.deleteById(id);
 	}
+	
+	@Override
+	public void deleteAll(List<Comentario> comentarios) {
+		
+		repository.deleteAll(comentarios);
+	}
 
 	@Override
 	public List<Comentario> consultaTodos() {
@@ -83,6 +103,25 @@ public class MantemComentarioI implements MantemComentario{
 	
 		return Optional.ofNullable(repository.save(comentarioAtualizado));
 	}
+
+	@Override
+	public Optional<List<Comentario>> usuarioExcluido(Long id) {
+		
+		List<Comentario> comentarioUser = repository.consultaComentariosUser(id);
+		
+		if(comentarioUser.isEmpty()) {
+			return Optional.empty();
+		}
+		
+		User usuarioExcluiso = new User((long) 1,"Usuário Excluído");
+		
+		comentarioUser.forEach(c -> c.setUsuario(usuarioExcluiso));
+	
+		
+		return Optional.ofNullable(repository.saveAll(comentarioUser));
+	}
+
+
 	
 	
 	

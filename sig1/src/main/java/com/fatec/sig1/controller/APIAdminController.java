@@ -131,6 +131,13 @@ public class APIAdminController {
 	@CrossOrigin // desabilita o cors do spring security
 	@DeleteMapping("deletarUsuario/{id}")
 	public ResponseEntity<Object> deleteUsuario(@PathVariable(value = "id") Long id) {
+		
+		List<Comentario> comentarioUsuario = mantemComentario.consultaTodosOsComentariosUser(id);
+		
+		if (!(comentarioUsuario.isEmpty())) {
+			mantemComentario.deleteAll(comentarioUsuario);			
+		}
+		
 		Optional<User> user = mantemUser.consultaPorId(id);
 
 		if (user.isEmpty()) {
@@ -157,6 +164,13 @@ public class APIAdminController {
 	@CrossOrigin // desabilita o cors do spring security
 	@DeleteMapping("deletarOng/{id}")
 	public ResponseEntity<Object> deleteONG(@PathVariable(value = "id") Long id) {
+		
+		List<Comentario> comentarioOng = mantemComentario.consultaTodosOsComentariosOng(id);
+		
+		if (!(comentarioOng.isEmpty())) {
+			mantemComentario.deleteAll(comentarioOng);			
+		}
+			
 		Optional<Ong> ong = mantemOng.consultaPorId(id);
 		
 		if (ong.isEmpty()) {
