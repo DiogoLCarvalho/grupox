@@ -77,14 +77,6 @@ public class MantemUserI implements MantemUser {
 		return repository.findById(id);
 	}
 
-	@Override
-	public Optional<User> consultaPorEmail(String email) {
-
-		logger.info(">>>>>> servico constultaPorEmail chamado");
-
-		return repository.findByEmail(email);
-	}
-
 	
 	@Override
 	public Optional<User> save(User user) {
@@ -111,7 +103,7 @@ public class MantemUserI implements MantemUser {
 		// Colocar if para verificar quantas informações tem??
 		// Dependendo de quantas tem chama outro construtor
 
-		User userModificado = new User(user.getNome(), user.getSobrenome(),user.getEmail(), user.getSenha(), user.getDataCadastro() ,user.getFavoritos());
+		User userModificado = new User(user.getNome(), user.getSobrenome(),user.getLogin(), user.getSenha(), user.getDataCadastro() ,user.getFavoritos());
 
 		
 		Optional<User> userGetIdConsulta = this.repository.findById(id);
@@ -138,8 +130,8 @@ public class MantemUserI implements MantemUser {
 			userModificado.setSobrenome(userGetId.getSobrenome());
 		}
 
-		if (userModificado.getEmail() == null) {
-			userModificado.setEmail(userGetId.getEmail());
+		if (userModificado.getLogin() == null) {
+			userModificado.setLogin(userGetId.getLogin());
 		}
 
 		if (userModificado.getSenha() == null) {
@@ -155,18 +147,19 @@ public class MantemUserI implements MantemUser {
 		return Optional.ofNullable(repository.save(userModificado));
 	}
 
-	@Override
-	public Optional<User> findByEmail(String email) {
-		logger.info(">>>>>> servico consulta Email do usuario chamado");
-
-		return repository.findByEmail(email);
-	}
 
 	@Override
 	public Optional<User> findBySenha(String senha) {
 		logger.info(">>>>>> servico consulta Senha do usuario chamado");
 
 		return repository.findBySenha(senha);
+	}
+
+
+	@Override
+	public Optional<User> consultaPorEmail(String email) {
+		// TODO Auto-generated method stub
+		return Optional.empty();
 	}
 
 

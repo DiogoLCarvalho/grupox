@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -17,12 +18,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MantemUserRepository extends JpaRepository<User, Long> {
+	
+	UserDetails findByLogin(String login);
 
 	List<User> findAllByNomeIgnoreCaseContaining(String nome);
 
 	Optional<User> findBySobrenome(String sobrenome);
-
-	Optional<User> findByEmail(String email);
 
 	Optional<User> findBySenha(String senha);
 

@@ -493,7 +493,7 @@ public class LoadDatabase {
 		repository.deleteAll();
 		
 		List<Long> user1Favoritos = new ArrayList<>(Arrays.asList((long) 1));
-		User user1 = new User("Diogo", "Lima","DiogoLima50@gmail.com", "12345", LocalDate.parse("2023-05-20"),user1Favoritos) ;
+		User user1 = new User("Diogo", "Lima","DiogoLima50@gmail.com", "$2a$10$Y50UaMFOxteibQEYLrwuHeehHYfcoafCopUazP12.rqB41bsolF5.", LocalDate.parse("2023-05-20"),user1Favoritos) ;
 		logger.info(TEXTO_LOGGER, repository.save(user1));
 		
 		logger.info(TEXTO_LOGGER, repository.save(user2));

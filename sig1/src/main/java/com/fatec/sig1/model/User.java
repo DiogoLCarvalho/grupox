@@ -2,9 +2,14 @@ package com.fatec.sig1.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -16,7 +21,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "usuario")
-public class User {
+public class User implements UserDetails{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@JsonView(Views.Public.class)
@@ -30,7 +35,7 @@ public class User {
 	private String sobrenome;
 		
 	@NotBlank(message = "O Email é obrigatório")
-	private String email;
+	private String login;
 
 	@NotBlank(message = "A senha é obrigatório")
 	private String senha;
@@ -45,29 +50,29 @@ public class User {
 	
 	
 	
-	public User(String nome, String sobrenome, String email, String senha, List<Long> favoritos) {
+	public User(String nome, String sobrenome, String login, String senha, List<Long> favoritos) {
 		this.nome = nome;
 		this.sobrenome = sobrenome;
-		this.email = email;
+		this.login = login;
 		this.senha = senha;
 		this.setFavoritos(favoritos);
 		setDataCadastro(LocalDate.now());
 		setRole(USUARIO);
 	}
 
-	public User(String nome, String sobrenome, String email, String senha, LocalDate dataCadastro, List<Long> favoritos) {
+	public User(String nome, String sobrenome, String login, String senha, LocalDate dataCadastro, List<Long> favoritos) {
 		this.nome = nome;
 		this.sobrenome = sobrenome;
-		this.email = email;
+		this.login = login;
 		this.senha = senha;
 		this.dataCadastro = dataCadastro;
 		this.setFavoritos(favoritos);
 		setRole(USUARIO);
 	}
 
-	public User(String nome, String email, String senha) {
+	public User(String nome, String login, String senha) {
 		this.nome = nome;
-		this.email = email;
+		this.login = login;
 		this.senha = senha;
 		setRole(USUARIO);
 	}
@@ -105,12 +110,12 @@ public class User {
 		this.sobrenome = sobrenome;
 	}
 	
-	public String getEmail() {
-		return email;
+	public String getLogin() {
+		return login;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setLogin(String login) {
+		this.login = login;
 	}
 	
 	public String getSenha() {
@@ -144,6 +149,48 @@ public class User {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	@Override	
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		
+		return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+	}
+
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return this.senha;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return this.login;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 	
 }

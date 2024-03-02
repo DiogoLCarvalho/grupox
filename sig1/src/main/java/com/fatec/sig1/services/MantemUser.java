@@ -18,7 +18,6 @@ public interface MantemUser {
 
 	Optional<User> atualiza(Long id, User user);
 	
-    Optional<User> findByEmail(String email);
     
     Optional<User> findBySenha(String senha);
 
