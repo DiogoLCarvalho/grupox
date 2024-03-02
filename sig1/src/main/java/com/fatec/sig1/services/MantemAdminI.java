@@ -14,7 +14,6 @@ import com.fatec.sig1.model.MantemAdminRepository;
 
 
 @Service
-
 public class MantemAdminI implements MantemAdmin {
 
 	Logger logger = LogManager.getLogger(this.getClass());
