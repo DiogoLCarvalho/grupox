@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fatec.sig1.model.DadosAutenticacao;
+import com.fatec.sig1.model.User;
+import com.fatec.sig1.security.DadosTokenJWT;
+import com.fatec.sig1.security.TokenService;
 
 @RestController
 @RequestMapping("/api/v1/login")
@@ -22,16 +25,21 @@ public class APILoginAuthController {
 	@Autowired
 	private AuthenticationManager manager;
 	
+	@Autowired
+	private TokenService tokenService;
+	
 	@PostMapping
 	public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao dados) {
 		
 		// DTO do spring
-		var token = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
+		var AuthenticationToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
 		
 		// verifica os dados e armazena a resposta - Essa classe chama a findByLogin
-		var autentication = manager.authenticate(token);
+		var autentication = manager.authenticate(AuthenticationToken);
 		
-		return ResponseEntity.ok().build();
+		var JwtToken = tokenService.gerarTokenUser((User) autentication.getPrincipal());
+		
+		return ResponseEntity.ok(new DadosTokenJWT(JwtToken));
 	}
 	
 	
