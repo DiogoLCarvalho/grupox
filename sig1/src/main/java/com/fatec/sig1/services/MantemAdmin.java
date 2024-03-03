@@ -10,13 +10,9 @@ public interface MantemAdmin {
 
 	Optional<Admin> consultaPorId(Long id);
 	
-	Optional<Admin> consultaPorEmail(String email);
-
 	Optional<Admin> save(Admin admin);
 
 	void delete(Long id);
-	
-    Optional<Admin> findByEmail(String email);
     
     Optional<Admin> findBySenha(String senha);
 

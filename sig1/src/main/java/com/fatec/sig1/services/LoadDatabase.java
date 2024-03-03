@@ -37,7 +37,7 @@ public class LoadDatabase {
 	private static final String CENTRO = "Centro";
 	private static final String BANCO_ITAU = "Banco Itaú";
 	
-	Ong ong1 = new Ong("Adote sempre cabe mais um", 981151084, "03694000","Casa", "O Instituto Adote Sempre Cabe Mais Um resgata cães e gatos abandonados ou em situação de maus-tratos em Jarinu (SP). Os animais acolhidos são castrados, vacinados e encaminhados para a adoção, que também é acompanhada pela ONG.", "Proteção Animal", "adotesemprecabemaisum@gmail.com", "456", "33.605.926/0001-60", "6612-6|05", "089527", "0191", "Bradesco","emailpixadote@gmail.com", "302.206.482-71",ZONA_NORTE,LocalDate.parse("2023-02-20"));
+	Ong ong1 = new Ong("Adote sempre cabe mais um", 981151084, "03694000","Casa", "O Instituto Adote Sempre Cabe Mais Um resgata cães e gatos abandonados ou em situação de maus-tratos em Jarinu (SP). Os animais acolhidos são castrados, vacinados e encaminhados para a adoção, que também é acompanhada pela ONG.", "Proteção Animal", "adotesemprecabemaisum@gmail.com", "$2a$10$Y50UaMFOxteibQEYLrwuHeehHYfcoafCopUazP12.rqB41bsolF5.", "33.605.926/0001-60", "6612-6|05", "089527", "0191", "Bradesco","emailpixadote@gmail.com", "302.206.482-71",ZONA_NORTE,LocalDate.parse("2023-02-20"));
 	
 	List<Long> user2Favoritos = new ArrayList<>(Arrays.asList((long) 1, (long) 5));
 	User user2 = new User("Bianca", "Jesus","biancaJesus299@gmail.com", "98765*A", LocalDate.parse("2023-05-21"),user2Favoritos);
@@ -511,7 +511,7 @@ public class LoadDatabase {
 		return args -> {
 		repository.deleteAll();
 				
-		Admin admin1 = new Admin("Fernanda", "Sena de Souza","ScrumMaster4K@gmail.com", "secretyPassword12");
+		Admin admin1 = new Admin("Fernanda", "Sena de Souza","ScrumMaster4K@gmail.com", "$2a$10$Y50UaMFOxteibQEYLrwuHeehHYfcoafCopUazP12.rqB41bsolF5.");
 		logger.info(TEXTO_LOGGER, repository.save(admin1));
 		
 		};

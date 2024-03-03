@@ -21,7 +21,7 @@ import com.fatec.sig1.security.TokenService;
 public class APILoginAuthController {
 	
 	// Para a validação da autenticação é preciso usar uma classe do próprio spring
-	
+	/*
 	@Autowired
 	private AuthenticationManager manager;
 	
@@ -42,5 +42,5 @@ public class APILoginAuthController {
 		return ResponseEntity.ok(new DadosTokenJWT(JwtToken));
 	}
 	
-	
+	*/
 }

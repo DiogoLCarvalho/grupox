@@ -31,8 +31,6 @@ public interface MantemOng {
 	Optional<Ong> consultaPorCnpj(String cnpj);
 
 	Optional<Ong> consultaPorId(Long id);
-	
-	Optional<Ong> consultaPorEmail(String email);
 
 	Optional<Ong> save(Ong ong);
 
@@ -41,8 +39,6 @@ public interface MantemOng {
 	Optional<Ong> atualiza(Long id, Ong ong);
 
 	Endereco obtemEndereco(String cep);
-	
-    Optional<Ong> findByEmail(String email);
     
     Optional<Ong> findBySenha(String senha);
 }

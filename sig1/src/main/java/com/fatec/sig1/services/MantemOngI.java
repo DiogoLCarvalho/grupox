@@ -138,16 +138,7 @@ public class MantemOngI implements MantemOng {
 		return repository.findById(id);
 
 	}
-	@Override
-
-	public Optional<Ong> consultaPorEmail(String email) {
-
-		logger.info(">>>>>> servico constultaPorEmail chamado");
-
-		return repository.findByEmail(email);
-
-	}
-
+	
 	@Override
 
 	public Optional<Ong> save(Ong ong) {
@@ -182,7 +173,7 @@ public class MantemOngI implements MantemOng {
 		Endereco endereco = obtemEndereco(ong.getCep());
 		
 		Ong ongModificado = new Ong(ong.getNome(), ong.getTelefone(), ong.getCep(), ong.getComplemento(),
-				ong.getDescricao(), ong.getSegmento(), ong.getEmail(), ong.getSenha(), ong.getCnpj(), ong.getCnae(), 
+				ong.getDescricao(), ong.getSegmento(), ong.getLogin(), ong.getSenha(), ong.getCnpj(), ong.getCnae(), 
 				ong.getContaCorrente(),ong.getAgencia(),ong.getBanco() , ong.getPix(), ong.getCpf(), ong.getRegiao(), ong.getDataCadastro());
 
 		Optional<Ong> ongGetIdConsulta = this.repository.findById(id);
@@ -248,12 +239,6 @@ public class MantemOngI implements MantemOng {
 
 	}
 
-	@Override
-	public Optional<Ong> findByEmail(String email) {
-		logger.info(">>>>>> servico consulta Email chamado");
-
-		return repository.findByEmail(email);
-	}
 
 	@Override
 	public Optional<Ong> findBySenha(String senha) {

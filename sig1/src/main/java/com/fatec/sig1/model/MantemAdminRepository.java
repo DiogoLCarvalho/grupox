@@ -3,6 +3,7 @@ package com.fatec.sig1.model;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -17,13 +18,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MantemAdminRepository extends JpaRepository<Admin, Long> {
+	
+	UserDetails findByLogin(String login);
 
-	    List<Admin> findAllByNomeIgnoreCaseContaining(String nome);
+	List<Admin> findAllByNomeIgnoreCaseContaining(String nome);
 
-	    Optional<Admin> findBySobrenome(String sobrenome);
-	  
-	    Optional<Admin> findByEmail(String email);
+	Optional<Admin> findBySobrenome(String sobrenome);
 	    
-	    Optional<Admin> findBySenha(String senha);
+    Optional<Admin> findBySenha(String senha);
 
 }

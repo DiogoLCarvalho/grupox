@@ -1,9 +1,14 @@
 package com.fatec.sig1.model;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CNPJ;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -16,7 +21,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Ong {
+public class Ong implements UserDetails{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,7 +55,7 @@ public class Ong {
 	private String segmento;
 	
 	@NotBlank(message = "O Email é obrigatório")
-	private String email;
+	private String login;
 
 	@NotBlank(message = "A senha é obrigatório")
 	private String senha;
@@ -68,7 +73,7 @@ public class Ong {
 	
 	
 	public Ong(String nome, long telefone, String cep, String complemento, 
-			String descricao, String segmento, String email, String senha, String cnpj, 
+			String descricao, String segmento, String login, String senha, String cnpj, 
 			String cnae, String contaCorrente, String agencia, String banco, String pix, String cpf, String regiao) {
 		this.nome = nome;
 		this.telefone = telefone;
@@ -76,7 +81,7 @@ public class Ong {
 		this.complemento = complemento;
 		this.descricao = descricao;
 		this.segmento = segmento;
-		this.email = email;
+		this.login = login;
 		this.senha = senha;
 		this.cnpj = cnpj;
 		this.cnae = cnae;
@@ -91,7 +96,7 @@ public class Ong {
 	}
 
 	public Ong(String nome, long telefone, String cep, String complemento,
-			   String descricao, String segmento, String email, String senha, String cnpj,
+			   String descricao, String segmento, String login, String senha, String cnpj,
 			   String cnae, String contaCorrente, String agencia, String banco, String pix, String cpf, String regiao, LocalDate dataCadastro) {
 		this.nome = nome;
 		this.telefone = telefone;
@@ -99,7 +104,7 @@ public class Ong {
 		this.complemento = complemento;
 		this.descricao = descricao;
 		this.segmento = segmento;
-		this.email = email;
+		this.login = login;
 		this.senha = senha;
 		this.cnpj = cnpj;
 		this.cnae = cnae;
@@ -113,10 +118,10 @@ public class Ong {
 		setRole("ONG");
 	}
 
-	public Ong(String nome, String email, String senha, String cnpj, String cnae) {
+	public Ong(String nome, String login, String senha, String cnpj, String cnae) {
 		this.nome = nome;
 		this.cnpj = cnpj;
-		this.email = email;
+		this.login = login;
 		this.senha = senha;
 		this.cnae = cnae;
 		setRole("ONG");
@@ -205,12 +210,12 @@ public class Ong {
 		this.segmento = segmento;
 	}
 	
-	public String getEmail() {
-		return email;
+	public String getLogin() {
+		return login;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setLogin(String login) {
+		this.login = login;
 	}
 	
 	public String getSenha() {
@@ -283,6 +288,48 @@ public class Ong {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		 
+		return List.of(new SimpleGrantedAuthority("ROLE_ONG"));
+	}
+
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return this.senha;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return this.login;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 	
 	

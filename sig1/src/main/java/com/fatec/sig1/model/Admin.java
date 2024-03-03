@@ -1,6 +1,13 @@
 package com.fatec.sig1.model;
 
+import java.util.Collection;
+import java.util.List;
+
 import javax.validation.constraints.NotBlank;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -13,7 +20,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "administrador")
 
-public class Admin {
+public class Admin implements UserDetails{
 	
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,24 +33,25 @@ public class Admin {
 		private String sobrenome;
 			
 		@NotBlank(message = "O Email é obrigatório")
-		private String email;
+		private String login;
 
 		@JsonIgnore
 		@NotBlank(message = "A senha é obrigatório")
 		private String senha;
+		
 		private String role;
 		
-		public Admin(String nome, String sobrenome, String email, String senha) {
+		public Admin(String nome, String sobrenome, String login, String senha) {
 			this.nome = nome;
 			this.sobrenome = sobrenome;
-			this.email = email;
+			this.login = login;
 			this.senha = senha;
 			setRole("ADMIN");
 		}
 
-		public Admin(String nome, String email, String senha) {
+		public Admin(String nome, String login, String senha) {
 			this.nome = nome;
-			this.email = email;
+			this.login = login;
 			this.senha = senha;
 			setRole("ADMIN");
 		}
@@ -75,12 +83,12 @@ public class Admin {
 			this.sobrenome = sobrenome;
 		}
 		
-		public String getEmail() {
-			return email;
+		public String getLogin() {
+			return login;
 		}
 
-		public void setEmail(String email) {
-			this.email = email;
+		public void setLogin(String login) {
+			this.login = login;
 		}
 		
 		public String getSenha() {
@@ -97,6 +105,48 @@ public class Admin {
 
 		public void setRole(String role) {
 			this.role = role;
+		}
+
+		@Override
+		public Collection<? extends GrantedAuthority> getAuthorities() {
+
+			return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		}
+
+		@Override
+		public String getPassword() {
+			// TODO Auto-generated method stub
+			return this.senha;
+		}
+
+		@Override
+		public String getUsername() {
+			// TODO Auto-generated method stub
+			return this.login;
+		}
+
+		@Override
+		public boolean isAccountNonExpired() {
+			// TODO Auto-generated method stub
+			return true;
+		}
+
+		@Override
+		public boolean isAccountNonLocked() {
+			// TODO Auto-generated method stub
+			return true;
+		}
+
+		@Override
+		public boolean isCredentialsNonExpired() {
+			// TODO Auto-generated method stub
+			return true;
+		}
+
+		@Override
+		public boolean isEnabled() {
+			// TODO Auto-generated method stub
+			return true;
 		}
 
 	}

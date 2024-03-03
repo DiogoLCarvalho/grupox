@@ -8,6 +8,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,16 +22,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fatec.sig1.model.Comentario;
+import com.fatec.sig1.model.DadosAutenticacao;
 import com.fatec.sig1.model.Exclusao;
 import com.fatec.sig1.model.User;
 import com.fatec.sig1.model.UserDTO;
+import com.fatec.sig1.security.DadosTokenJWT;
+import com.fatec.sig1.security.TokenService;
 import com.fatec.sig1.services.MantemComentario;
 import com.fatec.sig1.services.MantemExclusao;
 import com.fatec.sig1.services.MantemUser;
 
 @RestController
 @RequestMapping("/api/v1/user")
-
 public class APIUserController {
 
 	@Autowired
@@ -43,6 +47,27 @@ public class APIUserController {
 	
 	User user;
 	Logger logger = LogManager.getLogger(this.getClass());
+	
+	@Autowired
+	private AuthenticationManager manager;
+	
+	@Autowired
+	private TokenService tokenService;
+	
+	@PostMapping("/login")
+	public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao dados) {
+		
+		// DTO do spring
+		var AuthenticationToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
+		
+		// verifica os dados e armazena a resposta - Essa classe chama a findByLogin
+		var autentication = manager.authenticate(AuthenticationToken);
+		
+		var JwtToken = tokenService.gerarTokenUser((User) autentication.getPrincipal());
+		
+		return ResponseEntity.ok(new DadosTokenJWT(JwtToken));
+	}
+	
 
 	@CrossOrigin // desabilita o cors do spring security
 	@PostMapping

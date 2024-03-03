@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
  
 /**
@@ -17,14 +18,14 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MantemOngRepository extends JpaRepository<Ong, Long> {
+	
+	UserDetails findByLogin(String login);
     
     Optional<Ong> findByCnpj(String cnpj);
 
     List<Ong> findAllByNomeIgnoreCaseContaining(String nome);
 
     Optional<Ong> findBySegmento(String segmento);
-  
-    Optional<Ong> findByEmail(String email);
     
     Optional<Ong> findBySenha(String senha);
 

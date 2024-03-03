@@ -36,15 +36,7 @@ public class MantemAdminI implements MantemAdmin {
 		return repository.findById(id);
 	}
 
-	@Override
-	public Optional<Admin> consultaPorEmail(String email) {
 
-		logger.info(">>>>>> servico constultaPorEmail chamado");
-
-		return repository.findByEmail(email);
-	}
-
-	
 	@Override
 	public Optional<Admin> save(Admin admin) {
 		
@@ -70,7 +62,7 @@ public class MantemAdminI implements MantemAdmin {
 		// Colocar if para verificar quantas informações tem??
 		// Dependendo de quantas tem chama outro construtor
 
-		Admin adminModificado = new Admin(admin.getNome(), admin.getSobrenome(),admin.getEmail(), admin.getSenha());
+		Admin adminModificado = new Admin(admin.getNome(), admin.getSobrenome(),admin.getLogin(), admin.getSenha());
 
 		Optional<Admin> adminGetIdConsulta = this.repository.findById(id);
 		
@@ -96,8 +88,8 @@ public class MantemAdminI implements MantemAdmin {
 			adminModificado.setSobrenome(adminGetId.getSobrenome());
 		}
 
-		if (adminModificado.getEmail() == null) {
-			adminModificado.setEmail(adminGetId.getEmail());
+		if (adminModificado.getLogin() == null) {
+			adminModificado.setLogin(adminGetId.getLogin());
 		}
 
 		if (adminModificado.getSenha() == null) {
@@ -107,12 +99,6 @@ public class MantemAdminI implements MantemAdmin {
 		return Optional.ofNullable(repository.save(adminModificado));
 	}
 
-	@Override
-	public Optional<Admin> findByEmail(String email) {
-		logger.info(">>>>>> servico consulta Email do usuario chamado");
-
-		return repository.findByEmail(email);
-	}
 
 	@Override
 	public Optional<Admin> findBySenha(String senha) {
