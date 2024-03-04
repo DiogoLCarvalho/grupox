@@ -11,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import jakarta.persistence.Entity;
@@ -36,7 +37,8 @@ public class User implements UserDetails{
 		
 	@NotBlank(message = "O Email é obrigatório")
 	private String login;
-
+	
+	@JsonIgnore
 	@NotBlank(message = "A senha é obrigatório")
 	private String senha;
 

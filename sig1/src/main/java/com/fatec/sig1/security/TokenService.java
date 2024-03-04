@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.fatec.sig1.model.Admin;
 import com.fatec.sig1.model.Ong;
 import com.fatec.sig1.model.User;
@@ -74,4 +75,20 @@ public class TokenService {
 	private Instant dataExpiracao() {
 		return LocalDateTime.now().plusDays(1).toInstant(ZoneOffset.of("-03:00"));
 	}
+	
+	
+	// Verifica token
+	public String pegaSubject(String tokenJWT) {
+		try {
+			var algoritmo = Algorithm.HMAC256(secret_master_hiper_key);
+			return JWT.require(algoritmo)
+					.withIssuer("Socieloo")
+					.build()
+					.verify(tokenJWT)
+					.getSubject();
+		} catch (JWTVerificationException e) {
+			throw new RuntimeException("Token inválido!");
+		}
+	}
+
 }

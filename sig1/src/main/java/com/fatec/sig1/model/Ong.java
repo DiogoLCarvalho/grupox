@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 //The JPA was renamed as Jakarta Persistence in 2019 and version 3.0 was released in 2020. This included the renaming of packages and properties
@@ -56,7 +57,8 @@ public class Ong implements UserDetails{
 	
 	@NotBlank(message = "O Email é obrigatório")
 	private String login;
-
+	
+	@JsonIgnore
 	@NotBlank(message = "A senha é obrigatório")
 	private String senha;
 	
