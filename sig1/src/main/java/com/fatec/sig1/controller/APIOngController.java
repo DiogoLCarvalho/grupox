@@ -83,10 +83,9 @@ public class APIOngController {
 
 		if (ongDTO.getCnpj() != null &&  (mantemOng.consultaPorCnpj(ongDTO.getCnpj()).isPresent())) {
 				logger.info(">>>>>> apicontroller consultaporcnpj CNPJ ja cadastrado");
-				return ResponseEntity.status(HttpStatus.CONFLICT).body("CNPJ já cadastrado");
-			
-				
+				return ResponseEntity.status(HttpStatus.CONFLICT).body("CNPJ já cadastrado");				
 		}
+		
 		
 		if (ongDTO.getCep() != null) {
 			Optional<Endereco> endereco = Optional.ofNullable(mantemOng.obtemEndereco(ongDTO.getCep()));
@@ -99,7 +98,50 @@ public class APIOngController {
 		}
 
 		try {
-			return ResponseEntity.status(HttpStatus.CREATED).body(mantemOng.save(ongDTO.retornaUmCliente()));
+			Optional<Ong> ongRetorno = mantemOng.save(ongDTO.retornaUmCliente());
+			
+			Ong ongFinal = new Ong(
+					ongRetorno.get().getNome(),
+					ongRetorno.get().getTelefone(),
+					ongRetorno.get().getCep(),
+					ongRetorno.get().getComplemento(),
+					ongRetorno.get().getDescricao(),
+					ongRetorno.get().getSegmento(),
+					ongRetorno.get().getLogin(),
+					ongRetorno.get().getSenha(),
+					ongRetorno.get().getCnpj(),
+					ongRetorno.get().getCnae(),
+					ongRetorno.get().getContaCorrente(),
+					ongRetorno.get().getAgencia(),
+					ongRetorno.get().getBanco(),
+					ongRetorno.get().getPix(),
+					ongRetorno.get().getCpf(),
+					ongRetorno.get().getRegiao()
+					);
+			
+			var JwtToken = tokenService.gerarTokenOng(ongFinal);
+			
+			OngDTO ongDTOResposta = new OngDTO(
+					ongRetorno.get().getNome(),
+					ongRetorno.get().getTelefone(),
+					ongRetorno.get().getCep(),
+					ongRetorno.get().getComplemento(),
+					ongRetorno.get().getDescricao(),
+					ongRetorno.get().getSegmento(),
+					ongRetorno.get().getLogin(),
+					ongRetorno.get().getSenha(),
+					ongRetorno.get().getCnpj(),
+					ongRetorno.get().getCnae(),
+					ongRetorno.get().getContaCorrente(),
+					ongRetorno.get().getAgencia(),
+					ongRetorno.get().getBanco(),
+					ongRetorno.get().getPix(),
+					ongRetorno.get().getCpf(),
+					ongRetorno.get().getRegiao(),
+					JwtToken
+					);
+			
+			return ResponseEntity.status(HttpStatus.CREATED).body(ongDTOResposta.retornaUmClienteToken());
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro não esperado");
 		}

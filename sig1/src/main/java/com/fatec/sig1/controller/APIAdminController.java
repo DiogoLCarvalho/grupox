@@ -1,4 +1,4 @@
-package com.fatec.sig1.controller;
+	package com.fatec.sig1.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -82,7 +82,27 @@ public class APIAdminController {
 			}
 			
 			try {
-				return ResponseEntity.status(HttpStatus.CREATED).body(mantemAdmin.save(adminDTO.retornaUmCliente()));
+				
+				Optional<Admin> adminRetorno = mantemAdmin.save(adminDTO.retornaUmCliente());
+				
+				Admin adminFinal = new Admin(
+						adminRetorno.get().getNome(),
+						adminRetorno.get().getSobrenome(),
+						adminRetorno.get().getLogin(),
+						adminRetorno.get().getSenha()
+						);
+				
+				var JwtToken = tokenService.gerarTokenAdmin(adminFinal);
+				
+				AdminDTO adminDTOResposta = new AdminDTO(
+						adminRetorno.get().getNome(),
+						adminRetorno.get().getSobrenome(),
+						adminRetorno.get().getLogin(),
+						adminRetorno.get().getSenha(),
+						JwtToken
+						);
+				
+				return ResponseEntity.status(HttpStatus.CREATED).body(adminDTOResposta.retornaUmClienteToken());
 			} catch (Exception e) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro não esperado");
 			}			

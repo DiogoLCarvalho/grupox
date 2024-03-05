@@ -2,6 +2,7 @@ package com.fatec.sig1.model;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.br.CNPJ;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class OngDTO {
 	
@@ -25,7 +26,7 @@ public class OngDTO {
 	private String segmento;
 
 	@NotBlank(message = "O Email é obrigatório")
-	private String email;
+	private String login;
 
 	@NotBlank(message = "A senha é obrigatório")
 	private String senha;
@@ -39,8 +40,10 @@ public class OngDTO {
 	private String pix;
 	private String cpf;
 
+	private String token;
+	
 	public OngDTO(String nome, long telefone, String cep, String complemento, 
-			String descricao, String segmento, String email, String senha, String cnpj, 
+			String descricao, String segmento, String login, String senha, String cnpj, 
 			String cnae, String contaCorrente, String agencia, String banco, String pix, String cpf, String regiao) {
 		this.nome = nome;
 		this.telefone = telefone;
@@ -50,7 +53,7 @@ public class OngDTO {
 		this.complemento = complemento;
 		this.descricao = descricao;
 		this.segmento = segmento;
-		this.email = email;
+		this.login = login;
 		this.senha = senha;
 		this.contaCorrente = contaCorrente;
 		this.agencia = agencia;
@@ -58,6 +61,28 @@ public class OngDTO {
 		this.pix = pix;
 		this.cpf = cpf;
 		this.regiao = regiao;
+	}
+	
+	public OngDTO(String nome, long telefone, String cep, String complemento, 
+			String descricao, String segmento, String login, String senha, String cnpj, 
+			String cnae, String contaCorrente, String agencia, String banco, String pix, String cpf, String regiao, String token) {
+		this.nome = nome;
+		this.telefone = telefone;
+		this.cnpj = cnpj;
+		this.cnae = cnae;
+		this.cep = cep;
+		this.complemento = complemento;
+		this.descricao = descricao;
+		this.segmento = segmento;
+		this.login = login;
+		this.senha = senha;
+		this.contaCorrente = contaCorrente;
+		this.agencia = agencia;
+		this.banco = banco;
+		this.pix = pix;
+		this.cpf = cpf;
+		this.regiao = regiao;
+		this.token = token;
 	}
 	
 	public OngDTO() {
@@ -70,6 +95,14 @@ public class OngDTO {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}	
 
 	public String getCep() {
 		return cep;
@@ -135,12 +168,12 @@ public class OngDTO {
 		this.senha = senha;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getLogin() {
+		return login;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
 	public String getContaCorrente() {
@@ -192,6 +225,13 @@ public class OngDTO {
 	}
 
 	public Ong retornaUmCliente() {
-		return new Ong(nome, telefone, cep, complemento, descricao, segmento, email, senha, cnpj, cnae, contaCorrente, agencia, banco, pix, cpf, regiao);
+		
+		String senhaCriptografada = new BCryptPasswordEncoder().encode(senha);
+		
+		return new Ong(nome, telefone, cep, complemento, descricao, segmento, login, senhaCriptografada, cnpj, cnae, contaCorrente, agencia, banco, pix, cpf, regiao);
+	}
+	
+	public OngDTO retornaUmClienteToken() {
+		return new OngDTO(nome, telefone, cep, complemento, descricao, segmento, login, senha, cnpj, cnae, contaCorrente, agencia, banco, pix, cpf, regiao, token);
 	}
 }

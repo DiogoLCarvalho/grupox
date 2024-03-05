@@ -78,11 +78,28 @@ public class APIUserController {
 			logger.info(">>>>>> apicontroller validacao da entrada dados invalidos  %s", result.getFieldError());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dados inválidos.");
 		}
+		
 
 		try {
-			return ResponseEntity.status(HttpStatus.CREATED).body(mantemUser.save(userDTO.retornaUmCliente()));
+			// Salva Cliente
+			Optional<User> userRetorno = mantemUser.save(userDTO.retornaUmCliente());
+			
+			User userFinal = new User(userRetorno.get().getNome(), userRetorno.get().getSobrenome(),userRetorno.get().getLogin(), userRetorno.get().getSenha(), userRetorno.get().getFavoritos());
+
+			var JwtToken = tokenService.gerarTokenUser(userFinal);
+			
+			UserDTO userDtoResposta = new UserDTO(
+					userRetorno.get().getNome(), 
+					userRetorno.get().getSobrenome(),
+					userRetorno.get().getLogin(),
+					userRetorno.get().getSenha(),
+					userRetorno.get().getFavoritos(),
+					JwtToken);
+		
+		
+			return ResponseEntity.status(HttpStatus.CREATED).body(userDtoResposta.retornaUmClienteComToken());
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro não esperado");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro não esperado" + e);
 		}
 	}
 

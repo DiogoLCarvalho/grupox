@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 public class UserDTO {
 	@NotBlank(message = "Nome é requerido")
@@ -14,19 +16,22 @@ public class UserDTO {
 	private String sobrenome;
 		
 	@NotBlank(message = "O Email é obrigatório")
-	private String email;
+	private String login;
 
 	@NotBlank(message = "A senha é obrigatório")
 	private String senha;
 		
 	private List<Long> favoritos = new ArrayList<>();
+	
+	private String token;
 
 
-	public UserDTO(String nome, String sobrenome,String email, String senha, List<Long> favoritos) {
+	public UserDTO(String nome, String sobrenome,String login, String senha, List<Long> favoritos, String token) {
 		this.nome = nome;
 		this.sobrenome = sobrenome;
-		this.email = email;
+		this.login = login;
 		this.senha = senha;
+		this.token = token;
 		this.setFavoritos(favoritos);
 	}
 		
@@ -50,12 +55,20 @@ public class UserDTO {
 	}
 
 
-	public String getEmail() {
-		return email;
+	public String getLogin() {
+		return login;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setLogin(String login) {
+		this.login = login;
+	}
+	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public String getSenha() {
@@ -76,7 +89,14 @@ public class UserDTO {
 	}
 	
 	public User retornaUmCliente() {
-		return new User(nome, sobrenome, email, senha, favoritos);
+		
+		String senhaCriptografada = new BCryptPasswordEncoder().encode(senha);
+
+		return new User(nome, sobrenome, login, senhaCriptografada, favoritos);
+	}
+	
+	public UserDTO retornaUmClienteComToken() {
+		return new UserDTO(nome, sobrenome, login, senha, favoritos, token);
 	}
 
 }

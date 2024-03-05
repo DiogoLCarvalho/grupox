@@ -2,6 +2,8 @@ package com.fatec.sig1.model;
 
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 public class AdminDTO {
 	
 	@NotBlank(message = "Nome é requerido")
@@ -11,19 +13,27 @@ public class AdminDTO {
 	private String sobrenome;
 		
 	@NotBlank(message = "O Email é obrigatório")
-	private String email;
+	private String login;
 
 	@NotBlank(message = "A senha é obrigatório")
 	private String senha;
 		
-	@NotBlank(message = "A senha é obrigatório")
+	private String token;
 
 
-	public AdminDTO(String nome, String sobrenome,String email, String senha) {
+	public AdminDTO(String nome, String sobrenome,String login, String senha) {
 		this.nome = nome;
 		this.sobrenome = sobrenome;
-		this.email = email;
+		this.login = login;
 		this.senha = senha;
+	}
+	
+	public AdminDTO(String nome, String sobrenome,String login, String senha, String token) {
+		this.nome = nome;
+		this.sobrenome = sobrenome;
+		this.login = login;
+		this.senha = senha;
+		this.setToken(token);
 	}
 		
 	public AdminDTO() {
@@ -46,12 +56,12 @@ public class AdminDTO {
 	}
 
 
-	public String getEmail() {
-		return email;
+	public String getLogin() {
+		return login;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
 	public String getSenha() {
@@ -62,8 +72,25 @@ public class AdminDTO {
 		this.senha = senha;
 	}
 	
-	public Admin retornaUmCliente() {
-		return new Admin(nome, sobrenome, email, senha);
+	public String getToken() {
+		return token;
 	}
 
+	public void setToken(String token) {
+		this.token = token;
+	}
+	
+	public Admin retornaUmCliente() {
+		
+		String senhaCriptografada = new BCryptPasswordEncoder().encode(senha);
+		
+		return new Admin(nome, sobrenome, login, senhaCriptografada);
+	}
+
+	public AdminDTO retornaUmClienteToken() {
+		return new AdminDTO(nome, sobrenome, login, senha, token);
+	}
+
+
+	
 }

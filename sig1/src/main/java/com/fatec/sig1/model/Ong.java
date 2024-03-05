@@ -297,37 +297,43 @@ public class Ong implements UserDetails{
 		 
 		return List.of(new SimpleGrantedAuthority("ROLE_ONG"));
 	}
-
+	
+	@JsonIgnore
 	@Override
 	public String getPassword() {
 		// TODO Auto-generated method stub
 		return this.senha;
 	}
-
+	
+	@JsonIgnore
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
 		return this.login;
 	}
-
+	
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
 		return true;
 	}
-
+	
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub
 		return true;
 	}
-
+	
+	@JsonIgnore
 	@Override
 	public boolean isCredentialsNonExpired() {
 		// TODO Auto-generated method stub
 		return true;
 	}
-
+	
+	@JsonIgnore
 	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
