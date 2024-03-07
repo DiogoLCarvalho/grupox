@@ -39,7 +39,7 @@ import com.fatec.sig1.services.MantemUser;
 
 @RestController
 @RequestMapping("/api/v1/admin")
-
+@CrossOrigin(origins = "http://localhost:5173/")
 public class APIAdminController {
 	
 	@Autowired
