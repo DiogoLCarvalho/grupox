@@ -3,6 +3,7 @@ package com.fatec.sig1.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,9 +32,10 @@ public class SecurityConfigurations {
 		            req.requestMatchers("/api/v1/user/login").permitAll()
 		            .requestMatchers("/api/v1/admin/login").permitAll()
 		            .requestMatchers("/api/v1/ong/login").permitAll()
-		            .requestMatchers("/api/v1/ong").permitAll()
-		            .requestMatchers("/api/v1/ong/{id}").permitAll()
-		            .requestMatchers("/api/v1/user").permitAll()
+		            .requestMatchers(HttpMethod.GET,"/api/v1/ong").permitAll()
+		            .requestMatchers(HttpMethod.POST,"/api/v1/ong").permitAll()
+		            .requestMatchers(HttpMethod.GET,"/api/v1/ong/{id}").permitAll()
+		            .requestMatchers(HttpMethod.POST,"/api/v1/user").permitAll()
 		            ;
 		            req.anyRequest().authenticated();
 		        }).addFilterBefore(SecurityFilter, UsernamePasswordAuthenticationFilter.class)
