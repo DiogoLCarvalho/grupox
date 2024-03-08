@@ -28,7 +28,6 @@ import com.fatec.sig1.services.MantemComentario;
 
 @RestController
 @RequestMapping("/api/v1/comentario")
-@CrossOrigin(origins = "http://localhost:5173/")
 public class APIComentarioController {
 	
 	@Autowired

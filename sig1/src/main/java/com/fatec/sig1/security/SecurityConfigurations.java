@@ -37,8 +37,14 @@ public class SecurityConfigurations {
 		            .requestMatchers(HttpMethod.GET,"/api/v1/ong/{id}").permitAll()
 		            .requestMatchers(HttpMethod.POST,"/api/v1/user").permitAll()
 		            ;
-		            req.anyRequest().authenticated();
-		        }).addFilterBefore(SecurityFilter, UsernamePasswordAuthenticationFilter.class)
+		            try {
+						req.anyRequest().authenticated().and().cors();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		        })
+		        .addFilterBefore(SecurityFilter, UsernamePasswordAuthenticationFilter.class)
 		    .build();
 		
 	}

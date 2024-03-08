@@ -35,7 +35,6 @@ import com.fatec.sig1.services.MantemUser;
 
 @RestController
 @RequestMapping("/api/v1/user")
-@CrossOrigin(origins = "http://localhost:5173/")
 public class APIUserController {
 
 	@Autowired
@@ -56,6 +55,7 @@ public class APIUserController {
 	@Autowired
 	private TokenService tokenService;
 	
+	@CrossOrigin // desabilita o cors do spring security
 	@PostMapping("/login")
 	public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao dados) {
 		
@@ -70,7 +70,6 @@ public class APIUserController {
 		return ResponseEntity.ok(new DadosTokenJWT(JwtToken));
 	}
 	
-
 	@CrossOrigin // desabilita o cors do spring security
 	@PostMapping
 	public ResponseEntity<Object> saveCliente(@RequestBody @Valid UserDTO userDTO, BindingResult result) {

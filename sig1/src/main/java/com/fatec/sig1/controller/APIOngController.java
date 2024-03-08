@@ -38,7 +38,6 @@ import com.fatec.sig1.services.MantemOng;
 
 @RestController
 @RequestMapping("/api/v1/ong")
-@CrossOrigin(origins = "http://localhost:5173/")
 public class APIOngController {
 
 	@Autowired
