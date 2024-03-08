@@ -91,10 +91,11 @@ public class APIUserController {
 			
 			UserDTO userDtoResposta = new UserDTO(
 					userRetorno.get().getNome(), 
+					userRetorno.get().getId(),
 					userRetorno.get().getSobrenome(),
 					userRetorno.get().getLogin(),
-					userRetorno.get().getSenha(),
 					userRetorno.get().getFavoritos(),
+					userRetorno.get().getSenha(),
 					JwtToken);
 		
 		

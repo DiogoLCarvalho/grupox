@@ -41,6 +41,7 @@ public class OngDTO {
 	private String cpf;
 
 	private String token;
+	private long id;
 	
 	public OngDTO(String nome, long telefone, String cep, String complemento, 
 			String descricao, String segmento, String login, String senha, String cnpj, 
@@ -65,7 +66,7 @@ public class OngDTO {
 	
 	public OngDTO(String nome, long telefone, String cep, String complemento, 
 			String descricao, String segmento, String login, String senha, String cnpj, 
-			String cnae, String contaCorrente, String agencia, String banco, String pix, String cpf, String regiao, String token) {
+			String cnae, String contaCorrente, String agencia, String banco, String pix, String cpf, String regiao, String token, long id) {
 		this.nome = nome;
 		this.telefone = telefone;
 		this.cnpj = cnpj;
@@ -83,6 +84,7 @@ public class OngDTO {
 		this.cpf = cpf;
 		this.regiao = regiao;
 		this.token = token;
+		this.id = id;
 	}
 	
 	public OngDTO() {
@@ -94,6 +96,14 @@ public class OngDTO {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 	
 	public String getToken() {
@@ -232,6 +242,6 @@ public class OngDTO {
 	}
 	
 	public OngDTO retornaUmClienteToken() {
-		return new OngDTO(nome, telefone, cep, complemento, descricao, segmento, login, senha, cnpj, cnae, contaCorrente, agencia, banco, pix, cpf, regiao, token);
+		return new OngDTO(nome, telefone, cep, complemento, descricao, segmento, login, senha, cnpj, cnae, contaCorrente, agencia, banco, pix, cpf, regiao, token, id);
 	}
 }
