@@ -6,6 +6,7 @@ import javax.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.impl.JWTParser;
 import com.fatec.sig1.model.Comentario;
 import com.fatec.sig1.model.DadosAutenticacao;
 import com.fatec.sig1.model.Exclusao;
@@ -32,6 +35,8 @@ import com.fatec.sig1.security.TokenService;
 import com.fatec.sig1.services.MantemComentario;
 import com.fatec.sig1.services.MantemExclusao;
 import com.fatec.sig1.services.MantemUser;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -106,7 +111,14 @@ public class APIUserController {
 
 	@CrossOrigin // desabilita o cors do spring security
 	@GetMapping
-	public ResponseEntity<List<User>> consultaTodos() {
+	public ResponseEntity<List<User>> consultaTodos(HttpServletRequest request) {
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+		System.out.println("token:" + JWT.decode(token).getClaim("role"));
+		
+		
 		return ResponseEntity.status(HttpStatus.OK).body(mantemUser.consultaTodos());
 	}
 
@@ -157,7 +169,7 @@ public class APIUserController {
 	@PutMapping("/{id}")
 	public ResponseEntity<Object> atualiza(@PathVariable long id, @RequestBody @Valid UserDTO userDTO,
 			BindingResult result) {
-
+		
 		logger.info(">>>>>> api atualiza informações da ong chamado");
 
 		if (result.hasErrors()) {
@@ -170,8 +182,14 @@ public class APIUserController {
 		if (c.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id não encontrado para atualizar usuario");
 		}
-
-		Optional<User> userConsultaA = mantemUser.atualiza(id, userDTO.retornaUmCliente());
+		
+		Optional<User> userConsultaA;
+		if(userDTO.getSenha() == null) {
+			userConsultaA = mantemUser.atualiza(id, userDTO.retornaUmClientePUT());			
+		}else {
+			userConsultaA = mantemUser.atualiza(id, userDTO.retornaUmCliente());		
+		}
+		
 
 		if (userConsultaA.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("usuario não foi encontrado em atualizar");

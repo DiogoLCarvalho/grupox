@@ -86,6 +86,12 @@ public class AdminDTO {
 		
 		return new Admin(nome, sobrenome, login, senhaCriptografada);
 	}
+	
+	
+	public Admin retornaUmClientePUT() {
+				
+		return new Admin(nome, sobrenome, login, senha);
+	}
 
 	public AdminDTO retornaUmClienteToken() {
 		return new AdminDTO(nome, sobrenome, login, senha, token);

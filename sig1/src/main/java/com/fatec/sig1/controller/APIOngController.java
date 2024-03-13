@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -224,8 +225,13 @@ public class APIOngController {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("CEP não localizado.");
 			}
 		}
-
-		Optional<Ong> ongConsultadaA = mantemOng.atualiza(id, ongDTO.retornaUmCliente());
+		Optional<Ong> ongConsultadaA;
+		
+		if(ongDTO.getSenha() == null){
+			ongConsultadaA = mantemOng.atualiza(id, ongDTO.retornaUmClientePUT());			
+		}else {
+			ongConsultadaA = mantemOng.atualiza(id, ongDTO.retornaUmCliente());	
+		}
 
 		if (!ongConsultadaA.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.OK).body(ongConsultadaA.get());

@@ -157,8 +157,13 @@ public class APIAdminController {
 		if (c.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id não encontrado para atualizar");
 		}
-
-		Optional<Admin> adminAtualizado = mantemAdmin.atualiza(id, adminDTO.retornaUmCliente());
+		
+		Optional<Admin> adminAtualizado;
+		if(adminDTO.getSenha() == null) {
+			adminAtualizado = mantemAdmin.atualiza(id, adminDTO.retornaUmClientePUT());
+		}else {
+			adminAtualizado = mantemAdmin.atualiza(id, adminDTO.retornaUmCliente());
+		}
 
 		if (adminAtualizado.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Administrador não encontrado");

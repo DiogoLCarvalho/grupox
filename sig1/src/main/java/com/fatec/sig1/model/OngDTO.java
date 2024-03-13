@@ -231,6 +231,11 @@ public class OngDTO {
 		return new Ong(nome, telefone, cep, complemento, descricao, segmento, login, senhaCriptografada, cnpj, cnae, contaCorrente, agencia, banco, pix, cpf, regiao);
 	}
 	
+	public Ong retornaUmClientePUT() {
+		
+		return new Ong(nome, telefone, cep, complemento, descricao, segmento, login, senha, cnpj, cnae, contaCorrente, agencia, banco, pix, cpf, regiao);
+	}
+	
 	public OngDTO retornaUmClienteToken() {
 		return new OngDTO(nome, telefone, cep, complemento, descricao, segmento, login, senha, cnpj, cnae, contaCorrente, agencia, banco, pix, cpf, regiao, token);
 	}

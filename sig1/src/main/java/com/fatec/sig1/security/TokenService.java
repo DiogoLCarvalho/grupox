@@ -30,6 +30,7 @@ public class TokenService {
 					.create()
 					.withIssuer("Socieloo")
 					.withSubject(usuario.getLogin())
+					.withClaim("role", usuario.getRole())
 					.withExpiresAt(dataExpiracao())
 					.sign(algoritmo);
 			
@@ -46,6 +47,7 @@ public class TokenService {
 					.create()
 					.withIssuer("Socieloo")
 					.withSubject(admin.getLogin())
+					.withClaim("role", admin.getRole())
 					.withExpiresAt(dataExpiracao())
 					.sign(algoritmo);
 			
@@ -62,6 +64,7 @@ public class TokenService {
 					.create()
 					.withIssuer("Socieloo")
 					.withSubject(ong.getLogin())
+					.withClaim("role", ong.getRole())
 					.withExpiresAt(dataExpiracao())
 					.sign(algoritmo);
 			

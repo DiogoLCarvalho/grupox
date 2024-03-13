@@ -104,7 +104,7 @@ public class MantemUserI implements MantemUser {
 		// Dependendo de quantas tem chama outro construtor
 
 		User userModificado = new User(user.getNome(), user.getSobrenome(),user.getLogin(), user.getSenha(), user.getDataCadastro() ,user.getFavoritos());
-
+		System.out.println(userModificado);
 		
 		Optional<User> userGetIdConsulta = this.repository.findById(id);
 		User userGetId;
@@ -136,6 +136,10 @@ public class MantemUserI implements MantemUser {
 
 		if (userModificado.getSenha() == null) {
 			userModificado.setSenha(userGetId.getSenha());
+		}
+		
+		if(userModificado.getFavoritos().isEmpty()) {
+			userModificado.setFavoritos(userGetId.getFavoritos());
 		}
 		
 		LocalDate dataAtual = LocalDate.now();

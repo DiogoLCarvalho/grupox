@@ -511,7 +511,7 @@ public class LoadDatabase {
 		return args -> {
 		repository.deleteAll();
 				
-		Admin admin1 = new Admin("Fernanda", "Sena de Souza","ScrumMaster4K@gmail.com", "$2a$10$Y50UaMFOxteibQEYLrwuHeehHYfcoafCopUazP12.rqB41bsolF5.");
+		Admin admin1 = new Admin("Fernanda", "Sena de Souza","ScrumMaster4K@gmail.com", "$2a$10$lGCjWNpJuCTVfZ/TDhSkyOW6bSkh6NTPVI87w35W8wyTKnFSr/4vW");
 		logger.info(TEXTO_LOGGER, repository.save(admin1));
 		
 		};

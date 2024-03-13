@@ -95,6 +95,11 @@ public class UserDTO {
 		return new User(nome, sobrenome, login, senhaCriptografada, favoritos);
 	}
 	
+	public User retornaUmClientePUT() {
+
+		return new User(nome, sobrenome, login, senha, favoritos);
+	}
+	
 	public UserDTO retornaUmClienteComToken() {
 		return new UserDTO(nome, sobrenome, login, senha, favoritos, token);
 	}

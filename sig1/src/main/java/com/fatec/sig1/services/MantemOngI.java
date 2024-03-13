@@ -196,6 +196,72 @@ public class MantemOngI implements MantemOng {
 		logger.info(
 				">>>>>> 2. servico atualiza informacoes da ong cep valido para o id => %s" , ongModificado.getId());
 	
+
+		if (ongModificado.getNome() == null) {
+			ongModificado.setNome(ongGetId.getNome());
+		}
+
+		if (ongModificado.getTelefone() == 0) {
+			ongModificado.setTelefone(ongGetId.getTelefone());
+		}
+
+		if (ongModificado.getCnpj() == null) {
+			ongModificado.setCnpj(ongGetId.getCnpj());
+		}
+
+		if (ongModificado.getCnae() == null) {
+			ongModificado.setCnae(ongGetId.getCnae());
+		}
+
+		if (ongModificado.getComplemento() == null) {
+			ongModificado.setComplemento(ongGetId.getComplemento());
+		}
+
+		if (ongModificado.getDescricao() == null) {
+			ongModificado.setDescricao(ongGetId.getDescricao());
+		}
+
+		if (ongModificado.getSegmento() == null) {
+			ongModificado.setSegmento(ongGetId.getSegmento());
+		}
+
+		if (ongModificado.getLogin() == null) {
+			ongModificado.setLogin(ongGetId.getLogin());
+		}
+
+		if (ongModificado.getSenha() == null) {
+			ongModificado.setSenha(ongGetId.getSenha());
+		}
+
+		if (ongModificado.getCep() == null) {
+			ongModificado.setCep(ongGetId.getCep());
+		}
+		
+		if (ongModificado.getContaCorrente() == null) {
+			ongModificado.setContaCorrente(ongGetId.getContaCorrente());
+		}
+		
+		if (ongModificado.getAgencia() == null) {
+			ongModificado.setAgencia(ongGetId.getAgencia());
+		}
+		
+		if (ongModificado.getBanco() == null) {
+			ongModificado.setBanco(ongGetId.getBanco());
+		}
+		
+		if (ongModificado.getPix() == null) {
+			ongModificado.setPix(ongGetId.getPix());
+		}
+		
+		if (ongModificado.getCpf() == null) {
+			ongModificado.setCpf(ongGetId.getCpf());
+		}
+		
+		if (ongModificado.getRegiao() == null) {
+			ongModificado.setRegiao(ongGetId.getRegiao());
+		}
+		
+		
 		LocalDate dataAtual = LocalDate.now();
 		
 		if (ongModificado.getDataCadastro().isEqual(dataAtual)) {
