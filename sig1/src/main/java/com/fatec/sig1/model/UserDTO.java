@@ -24,20 +24,30 @@ public class UserDTO {
 	private List<Long> favoritos = new ArrayList<>();
 	
 	private String token;
+	
+	private long id;
 
-
-	public UserDTO(String nome, String sobrenome,String login, String senha, List<Long> favoritos, String token) {
+	public UserDTO(String nome, long id, String sobrenome,String login, List<Long> favoritos, String token, String senha) {
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.login = login;
-		this.senha = senha;
 		this.token = token;
+		this.senha = senha;
+		this.id = id;
 		this.setFavoritos(favoritos);
 	}
 		
 	public UserDTO() {
 	}
 
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+	
 	public String getNome() {
 		return nome;
 	}
@@ -101,7 +111,7 @@ public class UserDTO {
 	}
 	
 	public UserDTO retornaUmClienteComToken() {
-		return new UserDTO(nome, sobrenome, login, senha, favoritos, token);
+		return new UserDTO(nome, id, sobrenome, login, favoritos, token, senha);
 	}
 
 }

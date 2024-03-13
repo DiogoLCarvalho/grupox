@@ -19,6 +19,7 @@ public class AdminDTO {
 	private String senha;
 		
 	private String token;
+	private long id;
 
 
 	public AdminDTO(String nome, String sobrenome,String login, String senha) {
@@ -28,15 +29,24 @@ public class AdminDTO {
 		this.senha = senha;
 	}
 	
-	public AdminDTO(String nome, String sobrenome,String login, String senha, String token) {
+	public AdminDTO(String nome, String sobrenome,String login, String senha, String token, long id) {
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.login = login;
 		this.senha = senha;
 		this.setToken(token);
+		this.id = id;
 	}
 		
 	public AdminDTO() {
+	}
+	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getNome() {
@@ -94,7 +104,7 @@ public class AdminDTO {
 	}
 
 	public AdminDTO retornaUmClienteToken() {
-		return new AdminDTO(nome, sobrenome, login, senha, token);
+		return new AdminDTO(nome, sobrenome, login, senha, token, id);
 	}
 
 

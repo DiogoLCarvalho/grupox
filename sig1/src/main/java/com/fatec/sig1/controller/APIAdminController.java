@@ -98,7 +98,8 @@ public class APIAdminController {
 						adminRetorno.get().getSobrenome(),
 						adminRetorno.get().getLogin(),
 						adminRetorno.get().getSenha(),
-						JwtToken
+						JwtToken,
+						adminRetorno.get().getId()
 						);
 				
 				return ResponseEntity.status(HttpStatus.CREATED).body(adminDTOResposta.retornaUmClienteToken());

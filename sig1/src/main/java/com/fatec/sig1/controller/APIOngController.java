@@ -138,7 +138,8 @@ public class APIOngController {
 					ongRetorno.get().getPix(),
 					ongRetorno.get().getCpf(),
 					ongRetorno.get().getRegiao(),
-					JwtToken
+					JwtToken,
+					ongRetorno.get().getId()
 					);
 			
 			return ResponseEntity.status(HttpStatus.CREATED).body(ongDTOResposta.retornaUmClienteToken());
