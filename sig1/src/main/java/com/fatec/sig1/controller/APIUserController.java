@@ -117,17 +117,21 @@ public class APIUserController {
 		final String authorizationHeaderValue = request.getHeader("Authorization");
 
 		final String token = authorizationHeaderValue.replace("Bearer ", "");
-		System.out.println("token:" + JWT.decode(token).getClaim("role"));
 		
+		if(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ADMIN\"") ) {
 		
-		return ResponseEntity.status(HttpStatus.OK).body(mantemUser.consultaTodos());
+			return ResponseEntity.status(HttpStatus.OK).body(mantemUser.consultaTodos());			
+		}
+		
+		List<User> ListaVazia = null;
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);
 	}
 
 
 
 	@CrossOrigin // desabilita o cors do spring security
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> deletePorId(@PathVariable(value = "id") Long id) {
+	public ResponseEntity<Object> deletePorId(@PathVariable(value = "id") Long id, HttpServletRequest request) {
 		
 		List<Comentario> comentarioUsuario = mantemComentario.consultaTodosOsComentariosUser(id);
 		
@@ -141,6 +145,17 @@ public class APIUserController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id não encontrado para deletar usuario");
 		}
 
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"USUARIO\"")) ) {
+			List<User> ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
+		}
+				
+		
 		mantemUser.delete(userConsultaD.get().getId());
 		Optional<Exclusao> excluiID = mantemExclusao.consultaPorId((long) 1);
 
@@ -157,19 +172,32 @@ public class APIUserController {
 
 	@CrossOrigin // desabilita o cors do spring security
 	@GetMapping("/{id}")
-	public ResponseEntity<Object> consultaPorId(@PathVariable Long id) {
+	public ResponseEntity<Object> consultaPorId(@PathVariable Long id, HttpServletRequest request) {
 		logger.info(">>>>>> apicontroller consulta por id chamado");
+		
 		Optional<User> userConsultaC = mantemUser.consultaPorId(id);
 		if (userConsultaC.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id não encontrado para consultar usuario");
 		}
+		
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"USUARIO\"")) ) {
+			List<User> ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
+		}
+		
+		
 		return ResponseEntity.status(HttpStatus.OK).body(userConsultaC.get());
 	}
 
 	@CrossOrigin // desabilita o cors do spring security
 	@PutMapping("/{id}")
 	public ResponseEntity<Object> atualiza(@PathVariable long id, @RequestBody @Valid UserDTO userDTO,
-			BindingResult result) {
+			BindingResult result, HttpServletRequest request) {
 		
 		logger.info(">>>>>> api atualiza informações da ong chamado");
 
@@ -183,6 +211,16 @@ public class APIUserController {
 		if (c.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id não encontrado para atualizar usuario");
 		}
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"USUARIO\"")) ) {
+			List<User> ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
+		}
+		
 		
 		Optional<User> userConsultaA;
 		if(userDTO.getSenha() == null) {
@@ -205,19 +243,49 @@ public class APIUserController {
 
 	@CrossOrigin // desabilita o cors do spring security
 	@GetMapping("/todosUsuarios")
-	public ResponseEntity<Long> relatorioTodosOsUsuarios() {
+	public ResponseEntity<Long> relatorioTodosOsUsuarios(HttpServletRequest request) {
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ADMIN\"")) ) {
+			Long ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
+		}
+		
 		return ResponseEntity.status(HttpStatus.OK).body(mantemUser.todosOsUsuarioCadastrados());
 	}
 
 	@CrossOrigin // desabilita o cors do spring security
-	@GetMapping("/cadastramentoOng")
-	public ResponseEntity<Integer> relatorioTodasAsOngCadastradasNoMes() {
+	@GetMapping("/cadastramentoUsuarios")
+	public ResponseEntity<Integer> relatorioTodasAsUsuariosCadastradasNoMes(HttpServletRequest request) {
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ADMIN\"")) ) {
+			Integer ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
+		}
+		
 		return ResponseEntity.status(HttpStatus.OK).body(mantemUser.todasAsONGCadastradasNoMes());
 	}
 
 	@CrossOrigin // desabilita o cors do spring security
-	@GetMapping("/cadastramentoOngMesPassado")
-	public ResponseEntity<Integer> relatorioTodasAsOngCadastradasNoMesPassado() {
+	@GetMapping("/cadastramentoUsuariosMesPassado")
+	public ResponseEntity<Integer> relatorioTodasAsUsuariosCadastradasNoMesPassado(HttpServletRequest request) {
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ADMIN\"")) ) {
+			Integer ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
+		}
+		
 		return ResponseEntity.status(HttpStatus.OK).body(mantemUser.todasAsONGCadastradasNoMesPassado());
 	}
 
@@ -227,11 +295,20 @@ public class APIUserController {
 
 	@CrossOrigin
 	@DeleteMapping("deletaComentario/{id}")
-	public ResponseEntity<Object> deletaComentario(@PathVariable(value = "id") Long id) {
+	public ResponseEntity<Object> deletaComentario(@PathVariable(value = "id") Long id, HttpServletRequest request) {
 		Optional<Comentario> comentarioConsultado = mantemComentario.consultaPorId(id);
 
 		if (comentarioConsultado.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id não encontrado para o comentario");
+		}
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"USUARIO\"")) ) {
+			List<User> ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
 		}
 
 		mantemComentario.delete(comentarioConsultado.get().getId());

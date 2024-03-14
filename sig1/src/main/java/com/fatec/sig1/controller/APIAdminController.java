@@ -25,6 +25,7 @@ import com.fatec.sig1.model.Ong;
 import com.fatec.sig1.model.User;
 import com.fatec.sig1.security.DadosTokenJWT;
 import com.fatec.sig1.security.TokenService;
+import com.auth0.jwt.JWT;
 import com.fatec.sig1.model.Admin;
 import com.fatec.sig1.model.AdminDTO;
 import com.fatec.sig1.model.Comentario;
@@ -35,6 +36,8 @@ import com.fatec.sig1.services.MantemComentario;
 import com.fatec.sig1.services.MantemExclusao;
 import com.fatec.sig1.services.MantemOng;
 import com.fatec.sig1.services.MantemUser;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 
 @RestController
@@ -113,17 +116,37 @@ public class APIAdminController {
 
 	@CrossOrigin // desabilita o cors do spring security
 	@GetMapping
-	public ResponseEntity<List<Admin>> consultaTodos() {
+	public ResponseEntity<List<Admin>> consultaTodos(HttpServletRequest request) {
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ADMIN\"")) ) {
+			List<Admin> ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
+		}
+		
 		return ResponseEntity.status(HttpStatus.OK).body(mantemAdmin.consultaTodos());
 	}
 
 	@CrossOrigin // desabilita o cors do spring security
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> deletePorId(@PathVariable(value = "id") Long id) {
+	public ResponseEntity<Object> deletePorId(@PathVariable(value = "id") Long id, HttpServletRequest request) {
 		Optional<Admin> adminConsultadoD = mantemAdmin.consultaPorId(id);
 		if (adminConsultadoD.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id não encontrado para deletar admin");
 		}
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ADMIN\"")) ) {
+			List<Admin> ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
+		}
+		
 		mantemAdmin.delete(adminConsultadoD.get().getId());
 		return ResponseEntity.status(HttpStatus.OK).body("Administrador excluido");
 	}
@@ -131,12 +154,22 @@ public class APIAdminController {
 	
 	@CrossOrigin // desabilita o cors do spring security
 	@GetMapping("/{id}")
-	public ResponseEntity<Object> consultaPorId(@PathVariable Long id) {
+	public ResponseEntity<Object> consultaPorId(@PathVariable Long id, HttpServletRequest request) {
 		logger.info(">>>>>> apicontroller consulta por id chamado");
 		Optional<Admin> adminConsultadoC = mantemAdmin.consultaPorId(id);
 		if (adminConsultadoC.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id não encontrado para consultar");
 		}
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ADMIN\"")) ) {
+			List<Admin> ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
+		}
+		
 		return ResponseEntity.status(HttpStatus.OK).body(adminConsultadoC.get());
 	}
 	
@@ -144,7 +177,7 @@ public class APIAdminController {
 	@CrossOrigin // desabilita o cors do spring security
 	@PutMapping("/{id}")
 	public ResponseEntity<Object> atualiza(@PathVariable long id, @RequestBody @Valid AdminDTO adminDTO,
-			BindingResult result) {
+			BindingResult result, HttpServletRequest request) {
 
 		logger.info(">>>>>> api atualiza informações da ong chamado");
 
@@ -158,6 +191,17 @@ public class APIAdminController {
 		if (c.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id não encontrado para atualizar");
 		}
+		
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ADMIN\"")) ) {
+			List<Admin> ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
+		}
+		
 		
 		Optional<Admin> adminAtualizado;
 		if(adminDTO.getSenha() == null) {
@@ -182,7 +226,7 @@ public class APIAdminController {
 	
 	@CrossOrigin // desabilita o cors do spring security
 	@DeleteMapping("deletarUsuario/{id}")
-	public ResponseEntity<Object> deleteUsuario(@PathVariable(value = "id") Long id) {
+	public ResponseEntity<Object> deleteUsuario(@PathVariable(value = "id") Long id, HttpServletRequest request) {
 		
 		List<Comentario> comentarioUsuario = mantemComentario.consultaTodosOsComentariosUser(id);
 		
@@ -203,6 +247,15 @@ public class APIAdminController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id de exclusão não encontrada");
 		}
 		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ADMIN\"")) ) {
+			List<Admin> ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
+		}
+		
 		Optional<Exclusao> userExclui = mantemExclusao.atualiza((long) 1, new Exclusao(excluiID.get().getOngExcluidas(), excluiID.get().getUsuariosExcluidos() + 1));
 		logger.info(">>>>>> apicontroller mais um usuario foi excluido  %s" , userExclui);
 		
@@ -215,7 +268,7 @@ public class APIAdminController {
 	
 	@CrossOrigin // desabilita o cors do spring security
 	@DeleteMapping("deletarOng/{id}")
-	public ResponseEntity<Object> deleteONG(@PathVariable(value = "id") Long id) {
+	public ResponseEntity<Object> deleteONG(@PathVariable(value = "id") Long id, HttpServletRequest request) {
 		
 		List<Comentario> comentarioOng = mantemComentario.consultaTodosOsComentariosOng(id);
 		
@@ -236,6 +289,15 @@ public class APIAdminController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id de exclusão não encontrada");
 		}
 		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ADMIN\"")) ) {
+			List<Admin> ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
+		}
+		
 		Optional<Exclusao> ongExclui = mantemExclusao.atualiza((long) 1, new Exclusao(excluiID.get().getOngExcluidas() + 1, excluiID.get().getUsuariosExcluidos()));
 		logger.info(">>>>>> apicontroller mais um usuario foi excluido  %s" , ongExclui);
 		
@@ -244,11 +306,20 @@ public class APIAdminController {
 	
 	@CrossOrigin // desabilita o cors do spring security
 	@GetMapping("/todasAsOngsExcluidas")
-	public ResponseEntity<Integer> consultaTodasAsOngExcluidas() {
+	public ResponseEntity<Integer> consultaTodasAsOngExcluidas(HttpServletRequest request) {
 		Optional <Exclusao> excluiID = mantemExclusao.consultaPorId((long) 1);
 		
 		if (excluiID.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(-1);
+		}
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ADMIN\"")) ) {
+			Integer ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
 		}
 		
 		return ResponseEntity.status(HttpStatus.OK).body(excluiID.get().getOngExcluidas());
@@ -257,11 +328,20 @@ public class APIAdminController {
 	
 	@CrossOrigin // desabilita o cors do spring security
 	@GetMapping("/todasAsUserExcluidas")
-	public ResponseEntity<Integer> consultaTodasAsUsuariosExcluidas() {
+	public ResponseEntity<Integer> consultaTodasAsUsuariosExcluidas(HttpServletRequest request) {
 		Optional <Exclusao> excluiID = mantemExclusao.consultaPorId((long) 1);
 		
 		if (excluiID.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(-1);
+		}
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ADMIN\"")) ) {
+			Integer ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
 		}
 		
 		return ResponseEntity.status(HttpStatus.OK).body(excluiID.get().getUsuariosExcluidos());
@@ -274,11 +354,20 @@ public class APIAdminController {
 	
 	@CrossOrigin
 	@DeleteMapping("deletaComentario/{id}")
-	public ResponseEntity<Object> deletaComentario(@PathVariable(value = "id") Long id){
+	public ResponseEntity<Object> deletaComentario(@PathVariable(value = "id") Long id,HttpServletRequest request){
 		Optional<Comentario> comentarioConsultado = mantemComentario.consultaPorId(id);
 		
 		if(comentarioConsultado.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id não encontrado para o comentario");
+		}
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ADMIN\"")) ) {
+			Integer ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
 		}
 		
 		mantemComentario.delete(comentarioConsultado.get().getId());

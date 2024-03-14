@@ -22,11 +22,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.auth0.jwt.JWT;
 import com.fatec.sig1.model.Comentario;
 import com.fatec.sig1.model.DadosAutenticacao;
 import com.fatec.sig1.model.Endereco;
 import com.fatec.sig1.model.Exclusao;
 import com.fatec.sig1.services.MantemUser;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import com.fatec.sig1.model.Ong;
 import com.fatec.sig1.model.OngDTO;
 import com.fatec.sig1.model.User;
@@ -160,7 +164,7 @@ public class APIOngController {
 	
 	@CrossOrigin // desabilita o cors do spring security
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> deletePorId(@PathVariable(value = "id") Long id) {
+	public ResponseEntity<Object> deletePorId(@PathVariable(value = "id") Long id,HttpServletRequest request) {
 		
 		List<Comentario> comentarioOng = mantemComentario.consultaTodosOsComentariosOng(id);
 		
@@ -182,6 +186,15 @@ public class APIOngController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id de exclusão não encontrada");
 		}
 		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ONG\"")) ) {
+			List<Ong> ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
+		}
+		
 		Optional<Exclusao> ongExclui = mantemExclusao.atualiza((long) 1, new Exclusao(excluiID.get().getOngExcluidas() + 1, excluiID.get().getUsuariosExcluidos()));
 		logger.info(">>>>>> apicontroller mais um usuario foi excluido  %s" , ongExclui);
 		
@@ -192,12 +205,13 @@ public class APIOngController {
 	
 	@CrossOrigin // desabilita o cors do spring security
 	@GetMapping("/{id}")
-	public ResponseEntity<Object> consultaPorId(@PathVariable Long id) {
+	public ResponseEntity<Object> consultaPorId(@PathVariable Long id,HttpServletRequest request) {
 		logger.info(">>>>>> apicontroller consulta por id chamado");
 		Optional<Ong> ongConsultadaC = mantemOng.consultaPorId(id);
 		if (ongConsultadaC.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id não encontrado para consultar ong");
 		}
+				
 		return ResponseEntity.status(HttpStatus.OK).body(ongConsultadaC.get());
 	}
 	
@@ -205,7 +219,7 @@ public class APIOngController {
 	@CrossOrigin // desabilita o cors do spring security
 	@PutMapping("/{id}")
 	public ResponseEntity<Object> atualiza(@PathVariable long id, @RequestBody @Valid OngDTO ongDTO,
-			BindingResult result) {
+			BindingResult result, HttpServletRequest request) {
 
 		logger.info(">>>>>> api atualiza informações da ong chamado");
 
@@ -226,6 +240,17 @@ public class APIOngController {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("CEP não localizado.");
 			}
 		}
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ONG\"")) ) {
+			List<Ong> ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
+		}
+		
+		
 		Optional<Ong> ongConsultadaA;
 		
 		if(ongDTO.getSenha() == null){
@@ -246,32 +271,83 @@ public class APIOngController {
 	// ----------------------------------------------------- PARA RELATÓRIO -----------------------------------------------------
 	@CrossOrigin // desabilita o cors do spring security
 	@GetMapping("/buscaRegiao/{zona}")
-	public ResponseEntity<Long> relatorioTotalPorRegiao(@PathVariable String zona) {
+	public ResponseEntity<Long> relatorioTotalPorRegiao(@PathVariable String zona, HttpServletRequest request) {
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ADMIN\"")) ) {
+			Long ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
+		}
+		
 		return ResponseEntity.status(HttpStatus.OK).body(mantemOng.todasAsONGPorRegiao(zona));
 	}
 
 	
 	@CrossOrigin // desabilita o cors do spring security
 	@GetMapping("/todasAsOngs")
-	public ResponseEntity<Long> relatorioTodasASONG() {
+	public ResponseEntity<Long> relatorioTodasASONG(HttpServletRequest request) {
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ADMIN\"")) ) {
+			Long ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
+		}
+		
 		return ResponseEntity.status(HttpStatus.OK).body(mantemOng.todasAsONGcadastradas());
 	}
 
 	@CrossOrigin // desabilita o cors do spring security
 	@GetMapping("/buscaSegmento/{seg}")
-	public ResponseEntity<Long> relatorioTotalPorSegmento(@PathVariable String seg) {
+	public ResponseEntity<Long> relatorioTotalPorSegmento(@PathVariable String seg, HttpServletRequest request) {
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ADMIN\"")) ) {
+			Long ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
+		}
+		
+		
 		return ResponseEntity.status(HttpStatus.OK).body(mantemOng.todasAsONGPorSegmento(seg));
 	}
 	
 	@CrossOrigin // desabilita o cors do spring security
 	@GetMapping("/cadastramentoOng")
-	public ResponseEntity<Integer> relatorioTodasAsOngCadastradasNoMes() {
+	public ResponseEntity<Integer> relatorioTodasAsOngCadastradasNoMes(HttpServletRequest request) {
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ADMIN\"")) ) {
+			Integer ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
+		}
+		
 		return ResponseEntity.status(HttpStatus.OK).body(mantemOng.todasAsONGCadastradasNoMes());
 	}
 	
 	@CrossOrigin // desabilita o cors do spring security
 	@GetMapping("/cadastramentoOngMesPassado")
-	public ResponseEntity<Integer> relatorioTodasAsOngCadastradasNoMesPassado() {
+	public ResponseEntity<Integer> relatorioTodasAsOngCadastradasNoMesPassado(HttpServletRequest request) {
+		
+		final String authorizationHeaderValue = request.getHeader("Authorization");
+
+		final String token = authorizationHeaderValue.replace("Bearer ", "");
+
+		if(!(JWT.decode(token).getClaim("role").toString().equalsIgnoreCase("\"ADMIN\"")) ) {
+			Integer ListaVazia = null;
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ListaVazia);			
+		}
+		
 		return ResponseEntity.status(HttpStatus.OK).body(mantemOng.todasAsONGCadastradasNoMesPassado());
 	}
 

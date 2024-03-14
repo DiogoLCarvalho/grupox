@@ -27,7 +27,7 @@ public class UserDTO {
 	
 	private long id;
 
-	public UserDTO(String nome, long id, String sobrenome,String login, List<Long> favoritos, String token, String senha) {
+	public UserDTO(String nome, long id, String sobrenome,String login, List<Long> favoritos, String senha,String token) {
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.login = login;
@@ -111,7 +111,7 @@ public class UserDTO {
 	}
 	
 	public UserDTO retornaUmClienteComToken() {
-		return new UserDTO(nome, id, sobrenome, login, favoritos, token, senha);
+		return new UserDTO(nome, id, sobrenome, login, favoritos, senha,token);
 	}
 
 }
